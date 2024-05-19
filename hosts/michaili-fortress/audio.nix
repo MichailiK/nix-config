@@ -1,16 +1,5 @@
 {pkgs, ...}: {
   environment.systemPackages = [ pkgs.qpwgraph ];
-  systemd.user.services.qpwgraph = {
-    enable = true;
-    description = "qpwgraph";
-    after = ["pipewire.service"];
-    wantedBy = ["default.target"];
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = "${pkgs.qpwgraph}/bin/qpwgraph";
-      Restart = "no";
-    };
-  };
   services = {
     pipewire = {
       enable = true;
