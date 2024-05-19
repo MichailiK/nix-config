@@ -8,8 +8,7 @@
     serviceConfig = {
       Type = "simple";
       ExecStart = "${pkgs.qpwgraph}/bin/qpwgraph";
-      Restart = "always";
-      RestartSec = "5";
+      Restart = "no";
     };
   };
   services = {
