@@ -9,7 +9,6 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  environment.variables.EDITOR = "nvim";
   # TODO might want to make that universal across all systems.
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
@@ -22,6 +21,12 @@
       enable = true;
       viAlias = true;
       vimAlias = true;
+      defaultEditor = true;
+      configure = {
+        packages.myVimPackages = with pkgs.vimPlugins; {
+	  start = [ vim-wayland-clipboard ];
+	};
+      };
     };
     direnv.enable = true;
     gnupg.agent = {
@@ -43,6 +48,7 @@
 
   environment.systemPackages = with pkgs; [
     wget
+    wl-clipboard
   ];
 
   # This option defines the first version of NixOS you have installed on this particular machine,
