@@ -28,7 +28,7 @@
       };
       vscode = {
         enable = true;
-        package = pkgs.vscodium;
+        package = pkgs.vscodium-fhs;
       };
     };
     home.stateVersion = "23.11";
