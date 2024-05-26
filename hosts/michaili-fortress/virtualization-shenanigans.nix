@@ -44,7 +44,7 @@
     ];
     kernelModules = ["vfio_pci" "vfio" "vfio_iommu_type1" "nouveau"];
     initrd.kernelModules = ["vfio_pci" "vfio" "vfio_iommu_type1" "nouveau"];
-    extraModulePackages = [inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.linuxPackages.kvmfr];
+    extraModulePackages = [inputs.nixpkgs.legacyPackages.${pkgs.system}.linuxPackages.kvmfr];
   };
   environment.etc = {
     "modprobe.d/kvmfr.conf".text = ''
