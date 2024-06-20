@@ -24,8 +24,8 @@
       defaultEditor = true;
       configure = {
         packages.myVimPackages = with pkgs.vimPlugins; {
-	  start = [ vim-wayland-clipboard ];
-	};
+          start = [vim-wayland-clipboard];
+        };
       };
     };
     direnv.enable = true;

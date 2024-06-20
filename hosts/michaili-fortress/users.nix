@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   # TODO do I want to share this user across all my systems?
   users = {
     # TODO turn off once the issue with hashedPasswordFile has been resolved

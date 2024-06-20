@@ -1,5 +1,5 @@
 {pkgs, ...}: {
-  environment.systemPackages = [ pkgs.qpwgraph ];
+  environment.systemPackages = [pkgs.qpwgraph];
   services = {
     pipewire = {
       enable = true;

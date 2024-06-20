@@ -29,10 +29,12 @@
         #buildOnTarget = true;
         targetHost = null; # TODO Remove when multiple personal devices are being introduced to the config
         # see README for why this is commented out
-	/*keys.users-michaili-password = {
-          # TODO might not want to ship secrets as part of this Git repo
-          keyCommand = ["gpg" "--decrypt" "${./secrets/users-michaili-password}"];
-        };*/
+        /*
+        keys.users-michaili-password = {
+               # TODO might not want to ship secrets as part of this Git repo
+               keyCommand = ["gpg" "--decrypt" "${./secrets/users-michaili-password}"];
+             };
+        */
       };
       defaults = {name, ...}: {
         imports = lib.flatten [

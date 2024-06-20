@@ -1,8 +1,7 @@
-{ pkgs, ... }:
-{
-  environment.systemPackages = [ 
-    pkgs.vlc 
-    pkgs.obs-studio 
+{pkgs, ...}: {
+  environment.systemPackages = [
+    pkgs.vlc
+    pkgs.obs-studio
     pkgs.vesktop
     pkgs.handbrake
   ];
