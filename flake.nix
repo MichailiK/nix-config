@@ -35,6 +35,7 @@
                keyCommand = ["gpg" "--decrypt" "${./secrets/users-michaili-password}"];
              };
         */
+	keys."michaili-fortress/tailscale-key".keyCommand = [ "gpg" "--decrypt" "${./secrets/michaili-fortress/tailscale-key.gpg}" ];
       };
       defaults = {name, ...}: {
         imports = lib.flatten [

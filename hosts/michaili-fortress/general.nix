@@ -15,6 +15,11 @@
   services = {
     openssh.enable = true;
     printing.enable = true;
+    tailscale = {
+      enable = true;
+      openFirewall = true;
+      authKeyFile = "/run/keys/michaili-fortress/tailscale-key";
+    };
   };
   programs = {
     neovim = {
