@@ -16,6 +16,7 @@
       nixpkgs.lib.systems.flakeExposed
       (system: callback nixpkgs.legacyPackages.${system});
   in {
+
     colmena = {
       meta = {
         nixpkgs = import nixpkgs {
@@ -51,7 +52,7 @@
           keys = lib.mkMerge [
             # Local/host specific secrets
             (lib.mkIf
-              config.ili.secrets.includeLocalSecrets
+              config.mich.secrets.includeLocalSecrets
               (lib.listToAttrs (map (path: {
                 name = lib.removePrefix "./" "${lib.path.removePrefix ./hosts/${name}/secrets path}";
                 value = {
@@ -66,7 +67,7 @@
                   keyCommand = ["gpg" "--decrypt" "${./secrets/${secretName}}"];
                 };
               })
-              config.ili.secrets.globalSecrets))
+              config.mich.secrets.globalSecrets))
           ];
         };
       };

@@ -4,8 +4,8 @@
   pkgs,
   ...
 }: {
-  ili.secrets.includeLocalSecrets = true;
-  ili.secrets.globalSecrets = [ "funny-shared-secret" ];
+  mich.secrets.includeLocalSecrets = true;
+  mich.secrets.globalSecrets = [ "funny-shared-secret" ];
 
 
   boot.supportedFilesystems = ["ntfs"];

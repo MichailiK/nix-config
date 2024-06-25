@@ -1,7 +1,7 @@
 {lib, ...}: let
   inherit (lib) mkOption mkEnableOption types;
 in {
-  options.ili.secrets = {
+  options.mich.secrets = {
     includeLocalSecrets = mkEnableOption "Secrets to be included in your hosts/\${name}/secrets directory.";
 
     globalSecrets = mkOption {
