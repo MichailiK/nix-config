@@ -10,7 +10,7 @@
     nixpkgs-unstable,
     home-manager,
   } @ inputs: let
-    lib = nixpkgs.lib;
+    inherit (nixpkgs) lib;
     mapPkgsForEachSystem = callback:
       nixpkgs.lib.genAttrs
       nixpkgs.lib.systems.flakeExposed
@@ -35,13 +35,40 @@
                keyCommand = ["gpg" "--decrypt" "${./secrets/users-michaili-password}"];
              };
         */
-	keys."michaili-fortress/tailscale-key".keyCommand = [ "gpg" "--decrypt" "${./secrets/michaili-fortress/tailscale-key.gpg}" ];
+        #keys."michaili-fortress/tailscale-key".keyCommand = [ "gpg" "--decrypt" "${./secrets/michaili-fortress/tailscale-key.gpg}" ];
       };
-      defaults = {name, ...}: {
+      defaults = {
+        name,
+        config,
+        ...
+      }: {
         imports = lib.flatten [
           (lib.filter (filePath: lib.hasSuffix ".nix" filePath) (lib.fileset.toList ./hosts/${name}))
+          ./modules/secrets.nix
           home-manager.nixosModules.home-manager
         ];
+        deployment = {
+          keys = lib.mkMerge [
+            # Local/host specific secrets
+            (lib.mkIf
+              config.ili.secrets.includeLocalSecrets
+              (lib.listToAttrs (map (path: {
+                name = lib.removePrefix "./" "${lib.path.removePrefix ./hosts/${name}/secrets path}";
+                value = {
+                  keyCommand = ["gpg" "--decrypt" "${path}"];
+                };
+              }) (lib.fileset.toList ./hosts/${name}/secrets))))
+
+            # Global/shared secrets
+            (lib.listToAttrs (map (secretName: {
+                name = "global/${secretName}";
+                value = {
+                  keyCommand = ["gpg" "--decrypt" "${./secrets/${secretName}}"];
+                };
+              })
+              config.ili.secrets.globalSecrets))
+          ];
+        };
       };
     };
     devShells = mapPkgsForEachSystem (pkgs: {

@@ -4,6 +4,10 @@
   pkgs,
   ...
 }: {
+  ili.secrets.includeLocalSecrets = true;
+  ili.secrets.globalSecrets = [ "funny-shared-secret" ];
+
+
   boot.supportedFilesystems = ["ntfs"];
 
   boot.loader.systemd-boot.enable = true;
@@ -18,7 +22,7 @@
     tailscale = {
       enable = true;
       openFirewall = true;
-      authKeyFile = "/run/keys/michaili-fortress/tailscale-key";
+      authKeyFile = "/run/keys/tailscale-key";
     };
   };
   programs = {
