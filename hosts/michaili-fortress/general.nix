@@ -5,8 +5,10 @@
   ...
 }: {
   ili.secrets.includeLocalSecrets = true;
-  ili.secrets.globalSecrets = [ "funny-shared-secret" ];
+  ili.secrets.globalSecrets = ["funny-shared-secret"];
 
+  boot.plymouth.enable = true;
+  boot.plymouth.theme = "spinner";
 
   boot.supportedFilesystems = ["ntfs"];
 
