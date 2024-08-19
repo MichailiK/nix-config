@@ -16,9 +16,13 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   # TODO might want to make that universal across all systems.
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   services = {
+    gnome.gnome-keyring.enable = lib.mkForce false;
     openssh.enable = true;
     printing.enable = true;
     tailscale = {
@@ -47,6 +51,10 @@
     git.enable = true;
     git.lfs.enable = true;
   };
+
+  environment.extraInit = ''
+    export SSH_AUTH_SOCK=$(${pkgs.gnupg}/bin/gpgconf --list-dirs agent-ssh-socket)
+  '';
 
   fonts.enableDefaultPackages = true;
 
