@@ -11,7 +11,7 @@
     pkgs.vesktop
     pkgs.handbrake
   ];
-  programs.kdeconnect = { enable = true; package = pkgs.gnomeExtensions.gsconnect; };
+  programs.kdeconnect = { enable = true; };
   hardware.pulseaudio.enable = false;
   services = {
     #xserver = {
