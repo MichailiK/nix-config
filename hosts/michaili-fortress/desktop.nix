@@ -27,8 +27,5 @@
   };
   programs = {
     firefox.enable = true;
-    dconf.profiles.user.databases = [
-      { settings."org/gnome/desktop/input-sources".sources = "[('xkb' 'eu')]"; }
-    ];
   };
 }
