@@ -16,6 +16,7 @@
                      node.name        = "VNode System"
                      media.class      = Audio/Sink
                      object.linger    = true
+		     audio.channels   = 2
                      audio.position   = [ FL FR ]
                      monitor.channel-volumes = false
                   }
@@ -26,6 +27,7 @@
                      node.name        = "VNode Voice"
                      media.class      = Audio/Sink
                      object.linger    = true
+		     audio.channels   = 2
                      audio.position   = [ FL FR ]
                      monitor.channel-volumes = false
                   }
@@ -36,6 +38,7 @@
                      node.name        = "VNode Applications"
                      media.class      = Audio/Sink
                      object.linger    = true
+		     audio.channels   = 2
                      audio.position   = [ FL FR ]
                      monitor.channel-volumes = false
                   }
@@ -46,6 +49,7 @@
                      node.name        = "VNode Combined"
                      media.class      = Audio/Sink
                      object.linger    = true
+		     audio.channels   = 2
                      audio.position   = [ FL FR ]
                      monitor.channel-volumes = false
                   }

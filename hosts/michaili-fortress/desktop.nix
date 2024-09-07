@@ -2,11 +2,16 @@
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   environment.systemPackages = [
     pkgs.vlc
-    pkgs.obs-studio
+    (pkgs.wrapOBS {
+      plugins = with pkgs.obs-studio-plugins; [
+        obs-pipewire-audio-capture
+	looking-glass-obs
+      ];
+    }) 
     pkgs.vesktop
     pkgs.handbrake
   ];
-  programs.kdeconnect = { enable = true; package = pkgs.gnomeExtensions.gsconnect; }
+  programs.kdeconnect = { enable = true; package = pkgs.gnomeExtensions.gsconnect; };
   hardware.pulseaudio.enable = false;
   services = {
     xserver = {
