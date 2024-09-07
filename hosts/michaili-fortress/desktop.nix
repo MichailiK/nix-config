@@ -5,7 +5,7 @@
     (pkgs.wrapOBS {
       plugins = with pkgs.obs-studio-plugins; [
         obs-pipewire-audio-capture
-	looking-glass-obs
+        looking-glass-obs
       ];
     }) 
     pkgs.vesktop
@@ -14,16 +14,16 @@
   programs.kdeconnect = { enable = true; package = pkgs.gnomeExtensions.gsconnect; };
   hardware.pulseaudio.enable = false;
   services = {
-    xserver = {
-      enable = true;
-      desktopManager.gnome.enable = true;
-      displayManager.gdm.enable = true;
-    };
-    #desktopManager.plasma6.enable = true;
-    #displayManager.sddm = {
+    #xserver = {
     #  enable = true;
-    #  wayland.enable = true;
+    #  desktopManager.gnome.enable = true;
+    #  displayManager.gdm.enable = true;
     #};
+    desktopManager.plasma6.enable = true;
+    displayManager.sddm = {
+      enable = true;
+      wayland.enable = true;
+    };
   };
   programs = {
     firefox.enable = true;
