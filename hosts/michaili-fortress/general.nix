@@ -7,6 +7,7 @@
   ili.secrets.includeLocalSecrets = true;
   ili.secrets.globalSecrets = ["funny-shared-secret"];
 
+
   boot.plymouth.enable = true;
   boot.plymouth.theme = "spinner";
 
@@ -20,6 +21,11 @@
     "nix-command"
     "flakes"
   ];
+
+  hardware.sane = {
+    enable = true;
+    extraBackends = [ pkgs.sane-airscan ];
+  };
 
   services = {
     gnome.gnome-keyring.enable = lib.mkForce false;

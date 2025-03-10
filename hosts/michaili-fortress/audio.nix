@@ -56,6 +56,22 @@
               }
           ]
         '')
+        (pkgs.writeTextDir "share/pipewire/pipewire.conf.d/99-echo-cancel.conf" ''
+	  context.modules = [
+	      {   name = libpipewire-module-echo-cancel
+	          args = {
+		      monitor.mode = true
+		      source.props = {
+		          node.name = "Blue Microphones Analog Stereo"
+	              }
+		      aec.args = {
+		          webrtc.gain_control = true
+			  webrtc.extended_filter = false
+		      }
+		  }
+	      }
+	  ]
+	'')
       ];
     };
   };
