@@ -1,4 +1,5 @@
 {pkgs, ...}: {
+  services.pulseaudio.enable = false;
   environment.systemPackages = [pkgs.qpwgraph];
   services = {
     pipewire = {
