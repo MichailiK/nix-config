@@ -7,11 +7,11 @@
         obs-pipewire-audio-capture
         looking-glass-obs
       ];
-    }) 
+    })
     pkgs.vesktop
     pkgs.handbrake
   ];
-  programs.kdeconnect = { enable = true; };
+  programs.kdeconnect = {enable = true;};
   hardware.pulseaudio.enable = false;
   services = {
     #xserver = {
