@@ -20,6 +20,9 @@
     };
   };
   programs = {
-    firefox.enable = true;
+    firefox = {
+      enable = true;
+      package = pkgs.librewolf;
+    };
   };
 }
