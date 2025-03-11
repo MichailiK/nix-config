@@ -7,15 +7,6 @@
   ili.secrets.includeLocalSecrets = true;
   #ili.secrets.globalSecrets = ["funny-shared-secret"];
 
-  # See https://discourse.nixos.org/t/systemd-boot-failing-to-boot-a-nixos-warbler-system-due-to-an-efi-assertion-failure/61450
-  # and https://github.com/systemd/systemd/issues/36706
-  systemd.package = pkgs.systemd.overrideAttrs (old: {
-    patches =
-      (old.patches or [])
-      ++ [
-        ./0001-boot-don-t-limit-any-allocations-below-4G.patch
-      ];
-  });
 
   boot.plymouth.enable = true;
   boot.plymouth.theme = "spinner";
