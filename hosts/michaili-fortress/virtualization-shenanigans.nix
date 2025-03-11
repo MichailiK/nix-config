@@ -43,7 +43,7 @@
       "split_lock_detect=warn" # TODO: Figure out whether I even need to disdable split lock deteciton
     ];
     kernelModules = ["vfio_pci" "vfio" "vfio_iommu_type1" "nouveau"];
-    initrd.kernelModules = ["vfio_pci" "vfio" "vfio_iommu_type1" "nouveau"];
+    initrd.kernelModules = ["vfio_pci" "vfio" "vfio_iommu_type1"];
     extraModulePackages = [inputs.nixpkgs.legacyPackages.${pkgs.system}.linuxPackages.kvmfr];
   };
   environment.etc = {
