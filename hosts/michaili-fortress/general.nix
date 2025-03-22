@@ -7,7 +7,6 @@
   ili.secrets.includeLocalSecrets = true;
   #ili.secrets.globalSecrets = ["funny-shared-secret"];
 
-
   boot.plymouth.enable = true;
   boot.plymouth.theme = "spinner";
 
@@ -15,12 +14,6 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  # TODO might want to make that universal across all systems.
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
 
   hardware.sane = {
     enable = true;
