@@ -1,5 +1,5 @@
 {
-  environment.extraInit = ''
+  environment.interactiveShellInit = ''
     run () {
       PACKAGE=$1; shift
       nix run nixpkgs#$PACKAGE -- $@
