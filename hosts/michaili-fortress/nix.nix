@@ -31,6 +31,9 @@ in {
     nixPath = [inputFarm.outPath];
     channel.enable = false;
     settings = {
+      trusted-users = [
+        "@wheel"
+      ];
       experimental-features = [
         "nix-command"
         "flakes"
@@ -39,7 +42,7 @@ in {
       flake-registry = "";
     };
   };
-  
+
   # thank u lychee for thanking raf https://github.com/itslychee/config/blob/0719e197b511a389264127dedeb87a2985bea486/modules/nix/settings.nix#L59-L63
   systemd.tmpfiles.rules = lib.mkIf (!config.nix.channel.enable) [
     "R /root/.nix-defexpr/channels - - - -"
