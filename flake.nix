@@ -2,13 +2,22 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-unstable";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs?ref=nixpkgs-unstable";
-    home-manager.url = "github:nix-community/home-manager";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nil = {
+      url = "github:oxalica/nil";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = {
     self,
     nixpkgs,
     nixpkgs-unstable,
     home-manager,
+    nil,
+    ...
   } @ inputs: let
     inherit (nixpkgs) lib;
     mapPkgsForEachSystem = callback:
@@ -71,9 +80,16 @@
         };
       };
     };
+    formatter = mapPkgsForEachSystem (pkgs: pkgs.alejandra);
     devShells = mapPkgsForEachSystem (pkgs: {
       default = pkgs.mkShell {
-        packages = with pkgs; [colmena alejandra];
+        packages = builtins.attrValues {
+          inherit
+            (pkgs)
+            colmena
+            alejandra
+            ;
+        };
       };
     });
   };

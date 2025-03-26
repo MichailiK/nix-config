@@ -1,7 +1,6 @@
 {
-  config,
-  lib,
   pkgs,
+  inputs,
   ...
 }: {
   ili.secrets.includeLocalSecrets = true;
@@ -21,7 +20,6 @@
   };
 
   services = {
-    gnome.gnome-keyring.enable = lib.mkForce false;
     openssh.enable = true;
     printing.enable = true;
     tailscale = {
@@ -30,6 +28,7 @@
       authKeyFile = "/run/keys/tailscale-key";
     };
   };
+
   programs = {
     neovim = {
       enable = true;
@@ -42,13 +41,18 @@
         };
       };
     };
+
     direnv.enable = true;
+
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
     };
-    git.enable = true;
-    git.lfs.enable = true;
+
+    git = {
+      enable = true;
+      lfs.enable = true;
+    };
   };
 
   environment.extraInit = ''
@@ -64,10 +68,14 @@
   time.timeZone = "Europe/Berlin";
   i18n.defaultLocale = "en_US.UTF-8";
 
-  environment.systemPackages = with pkgs; [
-    wget
-    wl-clipboard
-  ];
+  environment.systemPackages = builtins.attrValues {
+    inherit
+      (pkgs)
+      wget
+      wl-clipboard
+      ;
+    nil = inputs.nil.packages.${pkgs.system}.default;
+  };
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
