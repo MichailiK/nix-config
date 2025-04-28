@@ -20,7 +20,8 @@
         inherit
           (pkgs.obs-studio-plugins)
           obs-pipewire-audio-capture
-          looking-glass-obs
+          # nixpkgs issue #400555
+          #looking-glass-obs
           ;
       };
     };
