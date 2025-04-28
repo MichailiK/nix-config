@@ -21,6 +21,9 @@ in {
   nixpkgs.config.allowUnfree = true;
 
   nix = {
+    # https://github.com/NixOS/nix/issues/13104
+    package = pkgs.nixVersions.nix_2_26;
+    
     registry =
       mapAttrs' (name: val: {
         inherit name;
