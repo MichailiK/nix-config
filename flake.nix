@@ -1,7 +1,8 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-unstable";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs?ref=nixpkgs-unstable";
+    nixpkgs-master.url = "github:NixOS/nixpkgs?ref=nixos-unstable";
+    nixpkgs-unstable-small.url = "github:NixOS/nixpkgs?ref=nixos-unstable-small";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -19,6 +20,7 @@
     self,
     nixpkgs,
     nixpkgs-unstable,
+    nixpkgs-unstable-small,
     home-manager,
     nil,
     ...
