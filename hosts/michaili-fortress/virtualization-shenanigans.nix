@@ -1,12 +1,11 @@
 {
-  config,
-  lib,
   pkgs,
-  inputs,
+  config,
   ...
-}: {
+}:
+{
   users.groups = {
-    kvmfr = {};
+    kvmfr = { };
   };
   virtualisation.libvirtd = {
     enable = true;
@@ -19,8 +18,7 @@
           (pkgs.OVMFFull.override {
             secureBoot = true;
             tpmSupport = true;
-          })
-          .fd
+          }).fd
         ];
       };
       verbatimConfig = ''
@@ -35,24 +33,22 @@
   };
   programs.virt-manager.enable = true;
   boot = {
-    blacklistedKernelModules = ["nouveau"];
-    extraModprobeConfig = "options vfio-pci ids=10de:2504,10de:228e,144d:a80a";
+    blacklistedKernelModules = [ "nouveau" ];
+    extraModulePackages = [ config.boot.kernelPackages.kvmfr ];
     kernelParams = [
       "intel_iommu=on"
       "vfio.pci.ids=10de:2504,10de:228e,144d:a80a"
+      "kvmfr.static_size_mb=32"
       "split_lock_detect=warn" # TODO: Figure out whether I even need to disdable split lock deteciton
     ];
-    kernelModules = ["vfio_pci" "vfio" "vfio_iommu_type1" "nouveau"];
-    initrd.kernelModules = ["vfio_pci" "vfio" "vfio_iommu_type1"];
-    extraModulePackages = [inputs.nixpkgs.legacyPackages.${pkgs.system}.linuxPackages.kvmfr];
+    initrd.kernelModules = [
+      "vfio_pci"
+      "vfio"
+      "vfio_iommu_type1"
+      "kvmfr"
+    ];
   };
   environment.etc = {
-    "modprobe.d/kvmfr.conf".text = ''
-      options kvmfr static_size_mb=32
-    '';
-    "modules-load.d/kvmfr.conf".text = ''
-      kvmfr
-    '';
     "looking-glass-client.ini".text = ''
       [app]
       shmFile=/dev/kvmfr0
@@ -68,5 +64,5 @@
     SUBSYSTEM=="kvmfr", OWNER="qemu-libvirtd", GROUP="kvmfr", MODE="0660"
   '';
 
-  environment.systemPackages = [pkgs.looking-glass-client];
+  environment.systemPackages = [ pkgs.looking-glass-client ];
 }
