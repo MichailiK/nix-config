@@ -30,6 +30,8 @@
         ]
       '';
     };
+    onBoot = "ignore";
+    onShutdown = "shutdown";
   };
   programs.virt-manager.enable = true;
   boot = {
