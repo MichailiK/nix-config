@@ -1,13 +1,10 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs?ref=nixos-25.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs?ref=nixpkgs-unstable";
     nixpkgs-unstable-small.url = "github:NixOS/nixpkgs?ref=nixos-unstable-small";
     colmena.url = "github:zhaofengli/colmena";
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -17,10 +14,7 @@
     {
       self,
       nixpkgs,
-      nixpkgs-unstable,
-      nixpkgs-unstable-small,
       colmena,
-      home-manager,
       ...
     }@inputs:
     let

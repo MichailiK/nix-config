@@ -1,6 +1,5 @@
 {
   nixpkgs,
-  home-manager,
   ...
 }@inputs:
 builtins.mapAttrs (
@@ -35,7 +34,6 @@ builtins.mapAttrs (
         (lib.filter (filePath: lib.hasSuffix ".nix" filePath) (lib.fileset.toList ./hosts/${name}))
         # ./modules/**/*.nix
         (lib.filter (filePath: lib.hasSuffix ".nix" filePath) (lib.fileset.toList ./modules))
-        home-manager.nixosModules.home-manager
       ];
       config.networking.hostName = lib.mkDefault name;
       config.deployment = {
