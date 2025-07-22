@@ -29,18 +29,20 @@ in
       };
 
       host = originalOpts.host // {
-        description = originalOpts.host.description + ''
+        description =
+          originalOpts.host.description
+          + ''
 
-          Defaults to node's networking.hostName.
-          If networking.domain is set, uses config.networking.fqdn as well.
-        '';
+            Defaults to node's networking.hostName.
+            If networking.domain is set, uses config.networking.fqdn as well.
+          '';
         default =
-          [
-            config.networking.hostName
-          ]
-          ++ (lib.optionals (config.networking.domain != null) [
+          (lib.optionals (config.networking.domain != null) [
             config.networking.fqdn
-          ]);
+          ])
+          ++ [
+            config.networking.hostName
+          ];
       };
 
       knowNodesPublicKeys = mkEnableOption ''

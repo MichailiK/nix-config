@@ -1,5 +1,6 @@
 {
   nixpkgs,
+  nixpkgs-stable,
   ...
 }@inputs:
 builtins.mapAttrs (
@@ -15,6 +16,9 @@ builtins.mapAttrs (
     nixpkgs = import nixpkgs {
       system = "x86_64-linux";
       overlays = [ ];
+    };
+    nodeNixpkgs = {
+      raptor = import nixpkgs-stable { system = "x86_64-linux"; };
     };
     specialArgs = {
       inherit inputs;
