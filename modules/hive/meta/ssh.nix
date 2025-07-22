@@ -63,7 +63,7 @@ in
       message = "config.mich.meta.ssh.knowNodesPublicKeys cannot be enabled without enabling config.mich.meta.ssh.enable";
     }
     {
-      assertion = cfg.enable || !cfg.knowNodesPublicKeys;
+      assertion = cfg.enable || !cfg.trustedWithAgentForwarding;
       message = "config.mich.meta.ssh.trustedWithAgentForwarding cannot be enabled without enabling config.mich.meta.ssh.enable";
     }
   ];
@@ -73,30 +73,21 @@ in
       # Only consider nodes with SSH enabled
       filteredNodes = lib.filterAttrs (name: node: node.config.mich.meta.ssh.enable == true) nodes;
     in
-    (
-      # Add the (host) names & public keys of all the nodes to this system's known hosts file.
-      lib.optionalAttrs cfg.knowNodesPublicKeys (
-        builtins.mapAttrs (name: node: {
-          inherit (node.config.mich.meta.ssh) host hostName publicKeys;
-        }) filteredNodes
-      )
-    )
-    # When trustedWithAgentForwarding is enabled, set the `ForwardAgent` SSH
-    # option to true for all the hosts/nodes that also have this option enabled.
-    // (lib.optionalAttrs cfg.trustedWithAgentForwarding (
+    builtins.mapAttrs (
+      name: node:
       let
-        # Only consider nodes that also have trustedWithAgentForwarding enabled
-        trustedNodes = lib.filterAttrs (
-          name: node: node.config.mich.meta.ssh.trustedWithAgentForwarding == true
-        ) filteredNodes;
+        nodeCfg = node.config.mich.meta.ssh;
       in
-      builtins.mapAttrs (name: node: {
-        inherit (node.config.mich.meta.ssh) host hostName;
-        extraConfig = {
+      {
+        inherit (nodeCfg) host hostName;
+        # If enabled, add the public keys of all the nodes to this system's known hosts file.
+        publicKeys = lib.mkIf cfg.knowNodesPublicKeys nodeCfg.publicKeys;
+        # If enabled/trusted with agent forwarding, set the `ForwardAgent`
+        # SSH option to true for all the hosts/nodes that also are trusted.
+        extraConfig = lib.mkIf (cfg.trustedWithAgentForwarding && nodeCfg.trustedWithAgentForwarding) {
           ForwardAgent = true;
         };
-      }) trustedNodes
-    ))
+      }
+    ) filteredNodes
   );
-
 }
