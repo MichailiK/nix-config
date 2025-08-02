@@ -6,9 +6,10 @@
     in
     templates [
       "hive/base"
+      "hive/yubikey"
       "flakes"
       "desktop"
-      "yubikey"
+      "short-wireless"
     ];
 
   mich.meta = {
