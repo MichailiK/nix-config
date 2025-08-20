@@ -1,6 +1,5 @@
-{ pkgs, ... }:
-{
-    virtualisation.libvirtd = {
+{pkgs, ...}: {
+  virtualisation.libvirtd = {
     enable = true;
     extraConfig = "access_drivers = [ \"polkit\" ]";
 
@@ -9,7 +8,12 @@
       runAsRoot = true;
       ovmf = {
         enable = true;
-        packages = [(pkgs.OVMF.override { secureBoot = true; tpmSupport = true; }).fd];
+        packages = [
+          (pkgs.OVMF.override {
+            secureBoot = true;
+            tpmSupport = true;
+          }).fd
+        ];
       };
     };
     onBoot = "start";
@@ -60,7 +64,7 @@
         "org.libvirt.api.domain.screenshot", // Take domain/VM screenshot
         "org.libvirt.api.domain.send-input", // Send (keyboard) input to domain/VM
         "org.libvirt.api.domain.send-signal", // Send (UNIX) signal to domain/VM
-        "org.libvirt.api.domain.open-device", // Open device (e.g. serial device) 
+        "org.libvirt.api.domain.open-device", // Open device (e.g. serial device)
       ];
 
       function virtdTest(action, subject) {
@@ -83,7 +87,7 @@
 
         return polkit.Result.NOT_HANDLED;
       }
-      
+
       polkit.addRule(function(action, subject) {
         // Don't handle non-libvirt actions
         if (action.id.indexOf("org.libvirt") !== 0)
@@ -96,13 +100,13 @@
         // Don't handle actions from users that arent in the vm-users group
         if (!subject.isInGroup("vm-users"))
           return polkit.Result.NOT_HANDLED;
- 
+
 
         const domainName = action.lookup("domain_name");
         var domainText = "";
         if (domainName) domainText = " domain " + domainName;
         const result = virtdTest(action, subject);
-        
+
         polkit.log("LIBVIRTD RULE: " + String(result) + " to " + subject.user + " using " + action.id + domainText);
         return result;
       });

@@ -2,15 +2,12 @@
   lib,
   config,
   ...
-}:
-let
+}: let
   inherit (lib) mkOption types;
-in
-{
-
+in {
   # The default user to create with wheel permissions etc.
   options.mich.meta.defaultUser = {
-    name = mkOption { type = types.str; };
+    name = mkOption {type = types.str;};
     description = mkOption {
       type = types.nullOr types.str;
       default = null;
@@ -22,32 +19,37 @@ in
     };
     extraGroups = mkOption {
       type = types.listOf types.str;
-      default = [ ];
+      default = [];
       description = "Additional groups to add to the default user";
     };
     authorizedKeys = mkOption {
       type = types.listOf types.str;
-      default = [ ];
+      default = [];
       description = "The authorized SSH keys for the default user.";
+    };
+    packages = mkOption {
+      type = types.listOf types.package;
+      default = [];
+      description = "Packages to add to the default user";
     };
   };
 
-  config.users.users =
-    let
-      inherit (config.mich.meta.defaultUser)
-        name
-        description
-        wheel
-        extraGroups
-        authorizedKeys
-        ;
-    in
-    {
-      ${name} = {
-        inherit name description;
-        isNormalUser = true;
-        extraGroups = lib.optionals wheel [ "wheel" ] ++ extraGroups;
-        openssh.authorizedKeys.keys = authorizedKeys;
-      };
+  config.users.users = lib.mkIf (config.mich.meta.defaultUser.name != null) (let
+    inherit
+      (config.mich.meta.defaultUser)
+      name
+      description
+      wheel
+      extraGroups
+      authorizedKeys
+      packages
+      ;
+  in {
+    ${name} = {
+      inherit name description packages;
+      isNormalUser = true;
+      extraGroups = lib.optionals wheel ["wheel"] ++ extraGroups;
+      openssh.authorizedKeys.keys = authorizedKeys;
     };
+  });
 }

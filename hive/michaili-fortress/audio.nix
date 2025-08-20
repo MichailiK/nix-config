@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   services.pulseaudio.enable = false;
   environment.systemPackages = [
     pkgs.qpwgraph
@@ -7,7 +6,6 @@
   ];
   services = {
     pipewire = {
-
       configPackages = [
         (pkgs.writeTextDir "share/pipewire/pipewire.conf.d/10-virtual-sinks.conf" ''
             context.objects = [
@@ -139,13 +137,13 @@
           ]
 
         '')
-
       ];
 
       wireplumber = {
         # Broken/incomplete Lua script that would automatically link
         # specific programs to the VNode apps & voice sinks
-        /*extraScripts = {
+        /*
+          extraScripts = {
           "v-node-links.lua" = ''
             function createVNodeInterest (name)
               return Interest {
@@ -173,7 +171,7 @@
             }
 
             node_apps_om:connect("object-added", function (om, node)
-              
+
               print("Node by '" .. node.properties["application.name"] .. "' available")
             end)
 
@@ -196,7 +194,8 @@
               "custom.v-node-links" = "required";
             };
           };
-        };*/
+        };
+        */
       };
     };
   };

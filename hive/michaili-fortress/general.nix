@@ -1,16 +1,8 @@
-{
-  pkgs,
-  ...
-}: {
-
-  mich.secrets.includeLocalSecrets = true;
-  #mich.secrets.globalSecrets = ["funny-shared-secret"];
-
+{pkgs, ...}: {
   boot.supportedFilesystems = ["ntfs"];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
 
   services = {
     openssh = {
@@ -20,13 +12,8 @@
     tailscale = {
       enable = true;
       openFirewall = true;
-      authKeyFile = "/run/keys/tailscale-key";
     };
   };
-
-  #environment.extraInit = ''
-  #  export SSH_AUTH_SOCK=$(${pkgs.gnupg}/bin/gpgconf --list-dirs agent-ssh-socket)
-  #'';
 
   fonts.enableDefaultPackages = true;
 

@@ -1,17 +1,4 @@
-{ rootPath, ... }:
-{
-  imports =
-    let
-      templates = names: (builtins.map (name: rootPath + /templates/${name}.nix) names);
-    in
-    templates [
-      "hive/base"
-      "hive/yubikey"
-      "flakes"
-      "desktop"
-      "short-wireless"
-    ];
-
+{...}: {
   mich.meta = {
     ssh = {
       knowNodesPublicKeys = true;

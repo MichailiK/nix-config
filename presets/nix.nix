@@ -1,3 +1,5 @@
+# Preset for adjusting Nix configuration. Includes enabling flakes, using
+# this flake's inputs as the flake registry and allowing unfree software.
 {
   lib,
   inputs,

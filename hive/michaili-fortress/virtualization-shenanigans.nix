@@ -2,8 +2,7 @@
   pkgs,
   config,
   ...
-}:
-{
+}: {
   programs.virt-manager.enable = true;
 
   virtualisation.libvirtd = {
@@ -33,11 +32,10 @@
     onShutdown = "shutdown";
   };
 
-  
   boot = {
     initrd = {
-      # The NVMe module get to bind to the SSD in initrd. vfio must be loaded
-      # in initrd so it can bind to the SSD.
+      # The NVMe module gets to bind to the SSD in initrd. vfio must be loaded
+      # in initrd so it can bind to the SSD first.
       kernelModules = [
         "vfio"
         "vfio_pci"
@@ -47,16 +45,14 @@
     kernelModules = [
       "kvmfr"
     ];
-    extraModulePackages = [ config.boot.kernelPackages.kvmfr ];
-    extraModprobeConfig =
-      let
-        pciIds = [
-          "10de:2504" # NVIDIA GA106 [GeForce RTX 3060 Lite Hash Rate]
-          "10de:228e" # NVIDIA GA106 High Definition Audio Controller
-          "144d:a80a" # Samsung NVMe SSD Controller 980PRO
-        ];
-        in
-       ''
+    extraModulePackages = [config.boot.kernelPackages.kvmfr];
+    extraModprobeConfig = let
+      pciIds = [
+        "10de:2504" # NVIDIA GA106 [GeForce RTX 3060 Lite Hash Rate]
+        "10de:228e" # NVIDIA GA106 High Definition Audio Controller
+        "144d:a80a" # Samsung NVMe SSD Controller 980PRO
+      ];
+    in ''
       options kvmfr static_size_mb=32
       options vfio-pci ids=${builtins.concatStringsSep "," pciIds}
     '';
@@ -67,10 +63,10 @@
   };
 
   users.groups = {
-    kvmfr = { };
+    kvmfr = {};
   };
 
-  environment.systemPackages = [ pkgs.looking-glass-client ];
+  environment.systemPackages = [pkgs.looking-glass-client];
 
   environment.etc = {
     "looking-glass-client.ini".text = ''
@@ -82,5 +78,4 @@
   services.udev.extraRules = ''
     SUBSYSTEM=="kvmfr", OWNER="qemu-libvirtd", GROUP="kvmfr", MODE="0660"
   '';
-
 }

@@ -1,8 +1,5 @@
-{
-  ...
-}:
-{
-  mich.meta.defaultUser.extraGroups = [ "libvirtd" ];
+{...}: {
+  mich.meta.defaultUser.extraGroups = ["libvirtd"];
 
   security.sudo.wheelNeedsPassword = false;
   security.sudo.execWheelOnly = true;
@@ -24,11 +21,6 @@
   services.openssh.settings.PasswordAuthentication = false;
 
   networking.firewall.logRefusedConnections = false;
-
-  #boot.kernelParams = [
-  #   "isolcpus=4-11"
-  #   "nohz_full=4-11"
-  #];
 
   systemd.services.sshd = {
     serviceConfig.LogFilterPatterns = [
@@ -106,12 +98,12 @@
         "1.0.0.1"
       ];
       addresses = [
-        { Address = "78.46.83.238/27"; }
-        { Address = "2a01:4f8:120:11e6::1/64"; }
+        {Address = "78.46.83.238/27";}
+        {Address = "2a01:4f8:120:11e6::1/64";}
       ];
       routes = [
-        { Gateway = "78.46.83.225"; }
-        { Gateway = "fe80::1"; }
+        {Gateway = "78.46.83.225";}
+        {Gateway = "fe80::1";}
       ];
     };
   };

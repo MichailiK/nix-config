@@ -1,0 +1,47 @@
+{
+  inputs,
+  lib,
+  ilib,
+  iliPresets,
+  ...
+}: let
+  # These are "special files" that should not be treated as Nix modules
+  # and thus must not be imported with the module system.
+  specialFiles = [
+    "meta.nix"
+  ];
+in
+  ilib.mapSubDirectories (directory: let
+    meta =
+      if (builtins.pathExists ./${directory}/meta.nix)
+      then (import ./${directory}/meta.nix (inputs // {inherit lib ilib iliPresets;}))
+      else {};
+  in {
+    # The nixpkgs this node should be evaluated with.
+    # Null if the hive's default nixpkgs should be used.
+    nixpkgs =
+      if (meta ? nixpkgs)
+      then meta.nixpkgs
+      else null;
+    modules =
+      # Modules the node consists of. Excludes special files like `meta.nix`
+      (let
+        specialFileSet = lib.pipe specialFiles [
+          (builtins.map (path: ./${directory}/${path}))
+          (builtins.map lib.fileset.maybeMissing)
+          lib.fileset.unions
+        ];
+      in
+        lib.pipe ./${directory} [
+          (lib.fileset.fileFilter ({hasExt, ...}: hasExt "nix"))
+          (fileSet: lib.fileset.difference fileSet specialFileSet)
+          lib.fileset.toList
+        ])
+      # Any imports declared in the meta.nix
+      ++ (
+        if meta ? imports
+        then meta.imports
+        else []
+      );
+  })
+  ./.

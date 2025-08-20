@@ -1,10 +1,4 @@
-{ inputs, pkgs, ... }:
-{
-  imports = [
-    inputs.nix-index-database.nixosModules.nix-index
-  ];
-  programs.nix-index-database.comma.enable = true;
-
+{pkgs, ...}: {
   boot.plymouth = {
     enable = true;
     theme = "spinner";
@@ -27,12 +21,13 @@
   networking.networkmanager.enable = true;
 
   fonts.enableDefaultPackages = true;
-
+  /*
   services.printing.enable = true;
   hardware.sane = {
     enable = true;
-    extraBackends = [ pkgs.sane-airscan ];
+    extraBackends = [pkgs.sane-airscan];
   };
+  */
 
   programs.kdeconnect.enable = true;
   programs.firefox = {
@@ -47,7 +42,8 @@
     sessionVariables.NIXOS_OZONE_WL = "1";
 
     systemPackages = builtins.attrValues {
-      inherit (pkgs)
+      inherit
+        (pkgs)
         vlc
         vesktop
         handbrake
@@ -55,5 +51,4 @@
         ;
     };
   };
-
 }

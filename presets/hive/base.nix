@@ -1,5 +1,4 @@
-{ ... }:
-{
+{...}: {
   imports = [../base.nix];
   mich.meta.defaultUser = {
     name = "michaili";

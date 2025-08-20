@@ -10,30 +10,28 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs =
-    {
-      self,
-      nixpkgs,
-      colmena,
-      ...
-    }@inputs:
-    let
-      mapPkgsForEachSystem =
-        callback:
-        nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed (
-          system: callback nixpkgs.legacyPackages.${system}
-        );
-    in
-    {
-      colmenaHive = colmena.lib.makeHive (import ./hive.nix inputs);
-      formatter = mapPkgsForEachSystem (pkgs: pkgs.alejandra);
-      devShells = mapPkgsForEachSystem (pkgs: {
-        default = pkgs.mkShell {
-          packages = builtins.attrValues {
-            inherit (pkgs) alejandra;
-            inherit (colmena.packages.${pkgs.system}) colmena;
-          };
+  outputs = {
+    self,
+    nixpkgs,
+    colmena,
+    ...
+  } @ inputs: let
+    lib = nixpkgs.lib;
+    ilib = import ./ilib.nix {inherit lib nixpkgs;};
+    modules = import ./modules {inherit lib ilib;};
+    iliPresets = import ./presets {inherit lib ilib;};
+  in {
+    colmenaHive = import ./hive {inherit inputs ilib modules iliPresets;};
+    formatter = ilib.forAllSystems (pkgs: pkgs.alejandra);
+    devShells = ilib.forAllSystems (pkgs: {
+      default = pkgs.mkShell {
+        packages = builtins.attrValues {
+          inherit (pkgs) alejandra;
+          inherit (colmena.packages.${pkgs.system}) colmena;
         };
-      });
-    };
+      };
+    });
+    nixosModules = modules;
+    lib = ilib;
+  };
 }
