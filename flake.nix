@@ -14,6 +14,7 @@
     self,
     nixpkgs,
     colmena,
+    nixpkgs-stable,
     ...
   } @ inputs: let
     lib = nixpkgs.lib;
@@ -32,6 +33,7 @@
       };
     });
     nixosModules = modules;
+    packages = ilib.forAllSystems (pkgs: import ./packages {inherit pkgs inputs ilib modules iliPresets;});
     lib = ilib;
   };
 }

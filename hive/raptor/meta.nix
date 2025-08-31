@@ -12,6 +12,7 @@
     inherit
       (iliPresets)
       nix
+      openssh
       ;
   };
 }

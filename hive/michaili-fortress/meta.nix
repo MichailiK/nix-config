@@ -12,6 +12,7 @@
       nix
       desktop
       short-wireless
+      openssh
       ;
   };
 }

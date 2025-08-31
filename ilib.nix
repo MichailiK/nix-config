@@ -4,10 +4,12 @@
   ...
 }: rec {
   # Maps all systems. useful for flake outputs
-  forAllSystems = callback:
+  forAllSystems = callback: forAllSystemsOfNixpkgs nixpkgs callback;
+
+  forAllSystemsOfNixpkgs = nixpkgs: callback:
     lib.genAttrs lib.systems.flakeExposed (
       system: callback nixpkgs.legacyPackages.${system}
-    );
+  );
 
   # "Safe" version of builtins.readFileType that returns null if a path doesnt exist.
   pathFileType = path:
