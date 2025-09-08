@@ -43,9 +43,12 @@ in
     modules =
       # Modules the node consists of. Excludes special files like `meta.nix`
       (let
+        metaExcludedImports = if (!(meta ? excludeImports)) then [] else meta.excludeImports;
         specialFileSet = lib.pipe specialFiles [
           (builtins.map (path: ./${directory}/${path}))
           (builtins.map lib.fileset.maybeMissing)
+          # Also exclude files that are ignored in meta.nix
+          (v: v ++ metaExcludedImports)
           lib.fileset.unions
         ];
       in

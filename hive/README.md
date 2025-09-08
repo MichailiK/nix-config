@@ -19,6 +19,8 @@ an attribute set that may contain:
 - `nixpkgs`: A specific nixpkgs instance to use
 - `imports`: any additional modules to import
 - `specialArgs`: any specialArgs to add to the node
+- `excludeImports`: list of [fileset](https://nixos.org/manual/nixpkgs/unstable/#sec-functions-library-fileset)
+  or list of paths which get excluded from imports.
 
 All attributes are optional.
 
@@ -42,5 +44,6 @@ Example:
   specialArgs = {
     something = "abc";
   };
+  excludeImports = [ ./domains ];
 }
 ```
