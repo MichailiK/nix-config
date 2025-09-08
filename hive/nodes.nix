@@ -1,5 +1,6 @@
 {
   inputs,
+  nixpkgs,
   lib,
   ilib,
   iliPresets,
@@ -23,6 +24,22 @@ in
       if (meta ? nixpkgs)
       then meta.nixpkgs
       else null;
+
+    # The specialArgs that should be used for this node
+    specialArgs =
+      if (!(meta ? specialArgs))
+      then null
+      else if (builtins.isFunction meta.specialArgs)
+      then
+        meta.specialArgs {
+          inherit inputs ilib iliPresets;
+          nixpkgs =
+            if (meta ? nixpkgs)
+            then meta.nixpkgs
+            else nixpkgs;
+        }
+      else meta.specialArgs;
+
     modules =
       # Modules the node consists of. Excludes special files like `meta.nix`
       (let

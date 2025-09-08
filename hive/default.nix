@@ -8,19 +8,30 @@
 }: let
   colmena = inputs.colmena;
   lib = nixpkgs.lib;
-  nodes = (import ./nodes.nix) {inherit inputs lib ilib iliPresets;};
+  instantiatedNixpkgs = import nixpkgs {
+    system = "x86_64-linux";
+    overlays = [];
+  };
+  nodes = (import ./nodes.nix) {
+    inherit inputs lib ilib iliPresets;
+    nixpkgs = instantiatedNixpkgs;
+  };
 in
   colmena.lib.makeHive (
     {
       meta = {
-        nixpkgs = import nixpkgs {
-          system = "x86_64-linux";
-          overlays = [];
-        };
+        nixpkgs = instantiatedNixpkgs;
 
+        # Use the nixpkgs the node has provided in its meta.nix
         nodeNixpkgs = lib.pipe nodes [
           (lib.filterAttrs (name: value: value.nixpkgs != null))
           (builtins.mapAttrs (name: value: value.nixpkgs))
+        ];
+
+        # Add any specialArgs the node has provided in its meta.nix
+        nodeSpecialArgs = lib.pipe nodes [
+          (lib.filterAttrs (name: value: value.specialArgs != null))
+          (builtins.mapAttrs (name: value: value.specialArgs))
         ];
 
         specialArgs = {

@@ -18,6 +18,7 @@ an attribute set that may contain:
 
 - `nixpkgs`: A specific nixpkgs instance to use
 - `imports`: any additional modules to import
+- `specialArgs`: any specialArgs to add to the node
 
 All attributes are optional.
 
@@ -37,6 +38,9 @@ Example:
       flakes
       desktop
       ;
+  };
+  specialArgs = {
+    something = "abc";
   };
 }
 ```
