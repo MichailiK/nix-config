@@ -1,12 +1,12 @@
 {
   inputs,
+  nixpkgs,
   modules,
   ilib,
   iliPresets,
   ...
 }: let
   colmena = inputs.colmena;
-  nixpkgs = inputs.nixpkgs;
   lib = nixpkgs.lib;
   nodes = (import ./nodes.nix) {inherit inputs lib ilib iliPresets;};
 in
@@ -34,7 +34,7 @@ in
         ...
       }: {
         imports =
-          # Import all modules of this flake
+          # Import all modules of our own flake
           lib.flatten (builtins.attrValues modules);
 
         config.networking.hostName = lib.mkDefault name;
