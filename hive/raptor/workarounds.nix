@@ -28,7 +28,7 @@
     serviceConfig = {
       Type = "oneshot";
       User = "root";
-      ExecStart = "${lib.getExe pkgs.ethtool} gso off gro off tso off tx off rx off rxvlan off txvlan off";
+      ExecStart = "${lib.getExe pkgs.ethtool} -K eno1 gso off gro off tso off tx off rx off rxvlan off txvlan off";
     };
     wantedBy = ["multi-user.target"];
   };

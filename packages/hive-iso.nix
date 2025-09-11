@@ -1,4 +1,5 @@
 {
+  nixpkgs,
   inputs,
   ilib,
   pkgs,
@@ -6,7 +7,7 @@
   iliPresets,
   ...
 }:
-(inputs.nixpkgs.lib.nixosSystem {
+(nixpkgs.lib.nixosSystem {
   specialArgs = { inherit inputs ilib; nodes = {}; };
   modules =
     [
