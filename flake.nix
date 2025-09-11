@@ -33,7 +33,7 @@
       };
     });
     nixosModules = modules;
-    packages = ilib.forAllSystems (pkgs: import ./packages {inherit pkgs inputs ilib modules iliPresets;});
+    packages = ilib.forAllSystems (pkgs: import ./packages {inherit pkgs nixpkgs inputs ilib modules iliPresets;});
     lib = ilib;
   };
 }
