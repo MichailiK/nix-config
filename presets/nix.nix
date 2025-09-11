@@ -1,5 +1,5 @@
 # Preset for adjusting Nix configuration. Includes enabling flakes, using
-# this flake's inputs as the flake registry and allowing unfree software.
+# this flake's inputs as the flake registry & nix path, and allowing unfree software.
 {
   lib,
   inputs,
@@ -23,6 +23,7 @@ in {
   nixpkgs.config.allowUnfree = true;
 
   nix = {
+    package = pkgs.lix;
     registry =
       mapAttrs' (name: val: {
         inherit name;
