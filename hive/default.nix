@@ -42,11 +42,16 @@ in
         name,
         config,
         lib,
+        pkgs,
         ...
       }: {
         imports =
           # Import all modules of our own flake
           lib.flatten (builtins.attrValues modules);
+        
+        # Colmena doesn't inject this yet
+        # https://github.com/NixOS/nixpkgs/blob/40c7c335458e1a4a0a961f684d0395ff59a9b8ac/flake.nix#L89
+        config.nixpkgs.flake.source = builtins.toString pkgs.path;
 
         config.networking.hostName = lib.mkDefault name;
         config.deployment = {
