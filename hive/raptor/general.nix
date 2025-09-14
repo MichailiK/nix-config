@@ -87,24 +87,46 @@
 
   systemd.network = {
     enable = true;
-    networks."internet" = {
-      matchConfig = {
-        MACAddress = "50:eb:f6:2f:36:10";
+    networks = {
+      "internet" = {
+        matchConfig = {
+          MACAddress = "50:eb:f6:2f:36:10"; # eno1 NIC in Raptor
+        };
+        dns = [
+          "2606:4700:4700::1111" # Cloudflare IPv6 primary
+          "2606:4700:4700::1001" # Cloudflare IPv6 secondary
+          "1.1.1.1" # Cloudflare IPv4 primary
+          "1.0.0.1" # Cloudflare IPv4 secondary
+        ];
+        addresses = [
+          {Address = "78.46.83.238/27";} # raptor.michai.li
+          {Address = "188.40.162.193/29";} # gateway.raptor.michai.li
+          {Address = "2a01:4f8:120:11e6::1/128";} # raptor.michai.li
+          {Address = "2a01:4f8:120:11e6:f000::1/80";} # gateway.raptor.michai.li
+        ];
+        routes = [
+          {
+            Gateway = "78.46.83.225"; # Hetzner's Gateway
+            # For new packets/connections that raptor sends
+            # (such as ICMP TTL exceeded messages, generic traffic, ...)
+            # We want to send them from its gateway IP.
+            PreferredSource = "188.40.162.193"; # gateway.raptor.michai.li
+          }
+          {
+            Gateway = "fe80::1"; # Hetzner's Gateway
+            PreferredSource = "2a01:4f8:120:11e6:f000::1"; # gateway.raptor.michai.li
+          }
+        ];
+        networkConfig = {
+          # Since a routed/L3 networking setup is used for the virtual machines
+          # in Raptor, Raptor must act as a router, by both forwarding IP packets
+          # and responding to ARP/NDP requests on behalf of the VMs & Hetzner's gateway.
+          IPv4Forwarding = true;
+          IPv6Forwarding = true;
+          IPv4ProxyARP = true;
+          IPv6ProxyNDP = true;
+        };
       };
-      dns = [
-        "2606:4700:4700::1111"
-        "2606:4700:4700::1001"
-        "1.1.1.1"
-        "1.0.0.1"
-      ];
-      addresses = [
-        {Address = "78.46.83.238/27";}
-        {Address = "2a01:4f8:120:11e6::1/64";}
-      ];
-      routes = [
-        {Gateway = "78.46.83.225";}
-        {Gateway = "fe80::1";}
-      ];
     };
   };
 }
