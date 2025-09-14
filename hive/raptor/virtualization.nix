@@ -113,6 +113,6 @@
     '';
   };
   environment.variables = {
-    VIRSH_DEFAULT_URI = "qemu:///system";
+    LIBVIRT_DEFAULT_URI = "qemu:///system";
   };
 }
