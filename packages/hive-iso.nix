@@ -13,11 +13,13 @@
     [
       ({
         modulesPath,
+        lib,
         ...
       }: {
         nixpkgs.hostPlatform = pkgs.system;
         imports = ["${modulesPath}/installer/cd-dvd/installation-cd-minimal-new-kernel-no-zfs.nix"];
         isoImage.squashfsCompression = "zstd -Xcompression-level 6";
+        networking.useDHCP = lib.mkForce true;
       })
     ]
     ++ (builtins.attrValues modules)
