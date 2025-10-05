@@ -1,5 +1,6 @@
-{...}: {
-  mich.meta.defaultUser.extraGroups = ["libvirtd"];
+{ ... }:
+{
+  mich.meta.defaultUser.extraGroups = [ "libvirtd" ];
 
   security.sudo.wheelNeedsPassword = false;
   security.sudo.execWheelOnly = true;
@@ -17,10 +18,20 @@
     };
   };
 
-  services.openssh.enable = true;
-  services.openssh.settings.PasswordAuthentication = false;
+  services.openssh = {
+    enable = true;
+    settings.PasswordAuthentication = false;
+    listenAddresses = [
+      { addr = "78.46.83.238"; } # raptor.michai.li
+      { addr = "2a01:4f8:120:11e6::1"; } # raptor.michai.li
+    ];
+  };
 
   networking.firewall.logRefusedConnections = false;
+  networking.firewall.extraCommands = ''
+    iptables -A INPUT -p udp --dport 33434:33534 -j REJECT --reject-with icmp-port-unreachable
+    ip6tables -A INPUT -p udp --dport 33434:33534 -j REJECT --reject-with icmp6-port-unreachable
+  '';
 
   systemd.services.sshd = {
     serviceConfig.LogFilterPatterns = [
@@ -99,10 +110,10 @@
           "1.0.0.1" # Cloudflare IPv4 secondary
         ];
         addresses = [
-          {Address = "78.46.83.238/27";} # raptor.michai.li
-          {Address = "188.40.162.193/29";} # gateway.raptor.michai.li
-          {Address = "2a01:4f8:120:11e6::1/128";} # raptor.michai.li
-          {Address = "2a01:4f8:120:11e6:f000::1/80";} # gateway.raptor.michai.li
+          { Address = "78.46.83.238/27"; } # raptor.michai.li
+          { Address = "188.40.162.193/29"; } # gateway.raptor.michai.li
+          { Address = "2a01:4f8:120:11e6::1/128"; } # raptor.michai.li
+          { Address = "2a01:4f8:120:11e6:f000::1/80"; } # gateway.raptor.michai.li
         ];
         routes = [
           {
@@ -125,6 +136,10 @@
           IPv6Forwarding = true;
           IPv4ProxyARP = true;
           IPv6ProxyNDP = true;
+        };
+        cakeConfig = {
+          Bandwidth = "1G";
+          FlowIsolationMode = "dual-src-host"; # fairness is applied over source IPs (host, VMs, ...) first, then flows within them.
         };
       };
     };

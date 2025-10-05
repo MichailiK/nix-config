@@ -2,7 +2,8 @@
   pkgs,
   config,
   ...
-}: {
+}:
+{
   programs.virt-manager.enable = true;
 
   virtualisation.libvirtd = {
@@ -45,17 +46,19 @@
     kernelModules = [
       "kvmfr"
     ];
-    extraModulePackages = [config.boot.kernelPackages.kvmfr];
-    extraModprobeConfig = let
-      pciIds = [
-        "10de:2504" # NVIDIA GA106 [GeForce RTX 3060 Lite Hash Rate]
-        "10de:228e" # NVIDIA GA106 High Definition Audio Controller
-        "144d:a80a" # Samsung NVMe SSD Controller 980PRO
-      ];
-    in ''
-      options kvmfr static_size_mb=32
-      options vfio-pci ids=${builtins.concatStringsSep "," pciIds}
-    '';
+    extraModulePackages = [ config.boot.kernelPackages.kvmfr ];
+    extraModprobeConfig =
+      let
+        pciIds = [
+          "10de:2504" # NVIDIA GA106 [GeForce RTX 3060 Lite Hash Rate]
+          "10de:228e" # NVIDIA GA106 High Definition Audio Controller
+          "144d:a80a" # Samsung NVMe SSD Controller 980PRO
+        ];
+      in
+      ''
+        options kvmfr static_size_mb=32
+        options vfio-pci ids=${builtins.concatStringsSep "," pciIds}
+      '';
     kernelParams = [
       "intel_iommu=on"
       "split_lock_detect=warn" # TODO: Figure out whether I even need to disdable split lock deteciton
@@ -63,10 +66,10 @@
   };
 
   users.groups = {
-    kvmfr = {};
+    kvmfr = { };
   };
 
-  environment.systemPackages = [pkgs.looking-glass-client];
+  environment.systemPackages = [ pkgs.looking-glass-client ];
 
   environment.etc = {
     "looking-glass-client.ini".text = ''
