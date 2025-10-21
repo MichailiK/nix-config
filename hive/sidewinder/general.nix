@@ -13,6 +13,20 @@
     enable = true;
   };
 
+  services.caddy = {
+    enable = true;
+    virtualHosts = {
+      "michai.li" = {
+        serverAliases = [ "www.michai.li" ];
+        extraConfig = ''
+          root * /srv/http/michai.li
+          encode
+          file_server
+        '';
+      };
+    };
+  };
+
   services.openssh = {
     enable = true;
     openFirewall = false; # Firewall rules for SSH are set manually below
