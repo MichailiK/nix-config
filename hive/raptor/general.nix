@@ -21,10 +21,6 @@
   services.openssh = {
     enable = true;
     settings.PasswordAuthentication = false;
-    listenAddresses = [
-      { addr = "78.46.83.238"; } # raptor.michai.li
-      { addr = "2a01:4f8:120:11e6::1"; } # raptor.michai.li
-    ];
   };
 
   networking.firewall.logRefusedConnections = false;
