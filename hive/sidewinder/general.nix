@@ -9,6 +9,10 @@
     execWheelOnly = true;
   };
 
+  virtualisation.docker = {
+    enable = true;
+  };
+
   services.openssh = {
     enable = true;
     openFirewall = false; # Firewall rules for SSH are set manually below
