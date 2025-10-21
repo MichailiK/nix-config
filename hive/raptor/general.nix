@@ -20,6 +20,7 @@
 
   services.openssh = {
     enable = true;
+    openFirewall = false; # Firewall rules for SSH are set manually below
     settings.PasswordAuthentication = false;
   };
 
@@ -27,6 +28,12 @@
   networking.firewall.extraCommands = ''
     iptables -A INPUT -p udp --dport 33434:33534 -j REJECT --reject-with icmp-port-unreachable
     ip6tables -A INPUT -p udp --dport 33434:33534 -j REJECT --reject-with icmp6-port-unreachable
+
+    # Only allow incoming SSH connections from specific networks
+    iptables -A INPUT -p tcp --dport 22 -d 127.0.0.0/8 -j ACCEPT
+    iptables -A INPUT -p tcp --dport 22 -d 78.46.83.238 -j ACCEPT # raptor.michai.li
+    ip6tables -A INPUT -p tcp --dport 22 -d ::1/128 -j ACCEPT
+    ip6tables -A INPUT -p tcp --dport 22 -d 2a01:4f8:120:11e6::1 -j ACCEPT # raptor.michai.li
   '';
 
   systemd.services.sshd = {
