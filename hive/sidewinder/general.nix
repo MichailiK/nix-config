@@ -17,15 +17,24 @@
     enable = true;
     virtualHosts = {
       "michai.li" = {
-        serverAliases = [ "www.michai.li" ];
         extraConfig = ''
           root * /srv/http/michai.li
           encode
           file_server
         '';
       };
+      "www.michai.li" = {
+        extraConfig = ''
+          redir https://michai.li{uri}
+        '';
+      };
     };
   };
+  networking.firewall.allowedTCPPorts = [
+    80
+    443
+  ];
+  networking.firewall.allowedUDPPorts = [ 443 ];
 
   services.openssh = {
     enable = true;
