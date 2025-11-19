@@ -11,15 +11,6 @@
     qemu = {
       package = pkgs.qemu_kvm;
       runAsRoot = false;
-      ovmf = {
-        enable = true;
-        packages = [
-          (pkgs.OVMFFull.override {
-            secureBoot = true;
-            tpmSupport = true;
-          }).fd
-        ];
-      };
       verbatimConfig = ''
         cgroup_device_acl = [
           "/dev/null", "/dev/full", "/dev/zero",
