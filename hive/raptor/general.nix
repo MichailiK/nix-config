@@ -98,6 +98,7 @@
       ];
     };
   };
+  systemd.units."mdmonitor.service".enable = false;
 
   systemd.network = {
     enable = true;

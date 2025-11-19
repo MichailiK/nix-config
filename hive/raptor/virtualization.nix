@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   virtualisation.libvirtd = {
     enable = true;
     extraConfig = "access_drivers = [ \"polkit\" ]";
@@ -6,15 +7,7 @@
     qemu = {
       package = pkgs.qemu_kvm;
       runAsRoot = true;
-      ovmf = {
-        enable = true;
-        packages = [
-          (pkgs.OVMF.override {
-            secureBoot = true;
-            tpmSupport = true;
-          }).fd
-        ];
-      };
+      swtpm.enable = true;
     };
     onBoot = "start";
     onShutdown = "shutdown";
