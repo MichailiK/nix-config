@@ -63,7 +63,8 @@
         '')
 
         # Combines all the above virtual sinks into one "VNode Combined" node.
-        (pkgs.writeTextDir "share/pipewire/pipewire.conf.d/11-v-combined.conf" ''
+        /*
+          (pkgs.writeTextDir "share/pipewire/pipewire.conf.d/11-v-combined.conf" ''
           context.modules = [
             {
               name = libpipewire-module-combine-stream
@@ -99,9 +100,11 @@
           ]
 
         '')
+        */
 
         # Takes the above "VNode Combined" node & outputs it to every ALSA output device present
-        (pkgs.writeTextDir "share/pipewire/pipewire.conf.d/12-v-combined-alsa-out.conf" ''
+        /*
+          (pkgs.writeTextDir "share/pipewire/pipewire.conf.d/12-v-combined-alsa-out.conf" ''
           context.modules = [
             {
               name = libpipewire-module-combine-stream
@@ -137,6 +140,7 @@
           ]
 
         '')
+        */
       ];
 
       wireplumber = {
