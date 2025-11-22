@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   virtualisation.libvirtd = {
     enable = true;
     extraConfig = "access_drivers = [ \"polkit\" ]";

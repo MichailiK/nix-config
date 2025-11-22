@@ -4,9 +4,7 @@
   pkgs,
   modulesPath,
   ...
-}:
-
-{
+}: {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
   ];
@@ -19,9 +17,9 @@
     "sr_mod"
     "virtio_blk"
   ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
+  boot.initrd.kernelModules = [];
+  boot.kernelModules = ["kvm-intel"];
+  boot.extraModulePackages = [];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/552178fe-a0d4-4c62-aada-ca311a5be671";
@@ -60,12 +58,12 @@
     ];
   };
 
-  swapDevices = [ ];
+  swapDevices = [];
 
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp1s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
-  boot.kernelParams = [ "console=ttyS0" ];
+  boot.kernelParams = ["console=ttyS0"];
 }

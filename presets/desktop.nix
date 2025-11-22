@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   boot.plymouth = {
     enable = true;
     theme = "spinner";
@@ -22,13 +21,16 @@
   networking.networkmanager.enable = true;
   networking.useNetworkd = true;
 
-  fonts.enableDefaultPackages = true;
+  fonts = {
+    fontconfig.useEmbeddedBitmaps = true;
+    enableDefaultPackages = true;
+  };
   /*
-    services.printing.enable = true;
-    hardware.sane = {
-      enable = true;
-      extraBackends = [pkgs.sane-airscan];
-    };
+  services.printing.enable = true;
+  hardware.sane = {
+    enable = true;
+    extraBackends = [pkgs.sane-airscan];
+  };
   */
 
   programs.kdeconnect.enable = true;
@@ -44,7 +46,8 @@
     sessionVariables.NIXOS_OZONE_WL = "1";
 
     systemPackages = builtins.attrValues {
-      inherit (pkgs)
+      inherit
+        (pkgs)
         vlc
         vesktop
         handbrake

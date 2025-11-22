@@ -1,5 +1,4 @@
-{ ... }:
-{
+{...}: {
   mich.meta = {
     ssh = {
       knowNodesPublicKeys = true;

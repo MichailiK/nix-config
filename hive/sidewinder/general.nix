@@ -1,6 +1,4 @@
-{ config, ... }:
-{
-
+{config, ...}: {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -34,7 +32,7 @@
     80
     443
   ];
-  networking.firewall.allowedUDPPorts = [ 443 ];
+  networking.firewall.allowedUDPPorts = [443];
 
   services.openssh = {
     enable = true;

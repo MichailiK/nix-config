@@ -1,6 +1,5 @@
-{ ... }:
-{
-  mich.meta.defaultUser.extraGroups = [ "libvirtd" ];
+{...}: {
+  mich.meta.defaultUser.extraGroups = ["libvirtd"];
 
   security.sudo.wheelNeedsPassword = false;
   security.sudo.execWheelOnly = true;
@@ -114,10 +113,10 @@
           "1.0.0.1" # Cloudflare IPv4 secondary
         ];
         addresses = [
-          { Address = "78.46.83.238/27"; } # raptor.michai.li
-          { Address = "188.40.162.193/29"; } # gateway.raptor.michai.li
-          { Address = "2a01:4f8:120:11e6::1/128"; } # raptor.michai.li
-          { Address = "2a01:4f8:120:11e6:f000::1/80"; } # gateway.raptor.michai.li
+          {Address = "78.46.83.238/27";} # raptor.michai.li
+          {Address = "188.40.162.193/29";} # gateway.raptor.michai.li
+          {Address = "2a01:4f8:120:11e6::1/128";} # raptor.michai.li
+          {Address = "2a01:4f8:120:11e6:f000::1/80";} # gateway.raptor.michai.li
         ];
         routes = [
           {

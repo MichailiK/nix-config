@@ -1,8 +1,11 @@
-{ lib, pkgs, ... }:
 {
-  networking.firewall.allowedUDPPorts = [ 51820 ];
+  lib,
+  pkgs,
+  ...
+}: {
+  networking.firewall.allowedUDPPorts = [51820];
   networking.wireguard.interfaces.via-relay = {
-    ips = [ "10.0.0.1/30" ];
+    ips = ["10.0.0.1/30"];
     listenPort = 51820;
     privateKeyFile = "/etc/via-relay-experiment/private";
     postSetup = "${lib.getExe' pkgs.procps "sysctl"} -w net.ipv4.conf.via-relay.forwarding=1";

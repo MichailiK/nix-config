@@ -6,59 +6,59 @@
   pkgs,
   config,
   ...
-}:
-let
+}: let
   inherit (lib) mapAttrs' mapAttrsToList filterAttrs;
 
   # hacky way to figure out which nixpkgs flake is being used in this system
-  currentNixpkgsFlake =
-    let
-      pkgsPathString = builtins.toString pkgs.path;
-    in
+  currentNixpkgsFlake = let
+    pkgsPathString = builtins.toString pkgs.path;
+  in
     lib.findFirst (flake: flake.outPath == pkgsPathString) null (builtins.attrValues inputs);
 
   inputFarm = pkgs.linkFarm "input-farm" (
     mapAttrsToList
-      (name: path: {
-        inherit
-          name
-          path
-          ;
-      })
-      (
-        filterAttrs (name: _value: name != "self") (
-          inputs
-          // {
-            nixpkgs = if (currentNixpkgsFlake != null) then currentNixpkgsFlake else { outPath = pkgs.path; };
-          }
-        )
+    (name: path: {
+      inherit
+        name
+        path
+        ;
+    })
+    (
+      filterAttrs (name: _value: name != "self") (
+        inputs
+        // {
+          nixpkgs =
+            if (currentNixpkgsFlake != null)
+            then currentNixpkgsFlake
+            else {outPath = pkgs.path;};
+        }
       )
+    )
   );
-in
-{
+in {
   environment.sessionVariables.NIXPKGS_ALLOW_UNFREE = "1";
   nixpkgs.config.allowUnfree = true;
 
   warnings =
-    if (currentNixpkgsFlake == null) then
-      [
-        ''
-          Could not figure which nixpkgs flake input is being used in this system.
-          This will make `nix (run|shell|build) nixpkgs#...` invocations significantly slower!
-        ''
-      ]
-    else
-      [ ];
+    if (currentNixpkgsFlake == null)
+    then [
+      ''
+        Could not figure which nixpkgs flake input is being used in this system.
+        This will make `nix (run|shell|build) nixpkgs#...` invocations significantly slower!
+      ''
+    ]
+    else [];
 
   nixpkgs.overlays = [
     (final: prev: {
-      inherit (prev.lixPackageSets.stable)
+      inherit
+        (prev.lixPackageSets.stable)
         nixpkgs-review
         nix-eval-jobs
         nix-fast-build
         colmena
         ;
-      comma = prev.comma.override { nix = prev.lix; };
+      comma = prev.comma.override {nix = prev.lix;};
     })
   ];
 
@@ -66,23 +66,23 @@ in
     package = pkgs.lix;
     registry =
       (mapAttrs' (name: val: {
-        inherit name;
-        value.flake = val;
-      }) inputs)
+          inherit name;
+          value.flake = val;
+        })
+        inputs)
       // {
         nixpkgs =
-          if (currentNixpkgsFlake == null) then
-            {
-              to = {
-                type = "path";
-                path = builtins.toString pkgs.path;
-              };
-            }
-          else
-            { flake = currentNixpkgsFlake; };
+          if (currentNixpkgsFlake == null)
+          then {
+            to = {
+              type = "path";
+              path = builtins.toString pkgs.path;
+            };
+          }
+          else {flake = currentNixpkgsFlake;};
       };
 
-    nixPath = [ inputFarm.outPath ];
+    nixPath = [inputFarm.outPath];
     channel.enable = false;
     settings = {
       trusted-users = [

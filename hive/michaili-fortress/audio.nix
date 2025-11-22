@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   services.pulseaudio.enable = false;
   environment.systemPackages = [
     pkgs.qpwgraph
@@ -144,57 +143,57 @@
         # Broken/incomplete Lua script that would automatically link
         # specific programs to the VNode apps & voice sinks
         /*
-            extraScripts = {
-            "v-node-links.lua" = ''
-              function createVNodeInterest (name)
-                return Interest {
-                  type = "node",
-                  Constraint { "node.name", "equals", name, type = "pw-global" },
-                }
-              end
-
-              local vSystemInterest = createVNodeInterest("v-system")
-              local vAppInterest = createVNodeInterest("v-app")
-              local vVoiceInterest = createVNodeInterest("v-voice")
-
-              local vnode_om = ObjectManager {
-                vSystemInterest,
-                vAppInterest,
-                vVoiceInterest,
+          extraScripts = {
+          "v-node-links.lua" = ''
+            function createVNodeInterest (name)
+              return Interest {
+                type = "node",
+                Constraint { "node.name", "equals", name, type = "pw-global" },
               }
+            end
 
-              local node_apps_om = ObjectManager {
-                Interest {
-                  type = "node",
-                  Constraint { "application.name", "equals", "Looking Glass", type = "pw-global" },
-                  Constraint { "media.class", "equals", "Stream/Output/Audio", type = "pw-global" },
-                }
+            local vSystemInterest = createVNodeInterest("v-system")
+            local vAppInterest = createVNodeInterest("v-app")
+            local vVoiceInterest = createVNodeInterest("v-voice")
+
+            local vnode_om = ObjectManager {
+              vSystemInterest,
+              vAppInterest,
+              vVoiceInterest,
+            }
+
+            local node_apps_om = ObjectManager {
+              Interest {
+                type = "node",
+                Constraint { "application.name", "equals", "Looking Glass", type = "pw-global" },
+                Constraint { "media.class", "equals", "Stream/Output/Audio", type = "pw-global" },
               }
+            }
 
-              node_apps_om:connect("object-added", function (om, node)
+            node_apps_om:connect("object-added", function (om, node)
 
-                print("Node by '" .. node.properties["application.name"] .. "' available")
-              end)
+              print("Node by '" .. node.properties["application.name"] .. "' available")
+            end)
 
-              node_om:activate()
-              clients_apps_om:activate()
-            '';
-          };
-          extraConfig."10-v-node-links" = {
-            "wireplumber.components" = [
-              {
-                name = "v-node-links.lua";
-                type = "script/lua";
-                provides = "custom.v-node-links";
-              }
-            ];
+            node_om:activate()
+            clients_apps_om:activate()
+          '';
+        };
+        extraConfig."10-v-node-links" = {
+          "wireplumber.components" = [
+            {
+              name = "v-node-links.lua";
+              type = "script/lua";
+              provides = "custom.v-node-links";
+            }
+          ];
 
-            "wireplumber.profiles" = {
-              main = {
-                "custom.v-node-links" = "required";
-              };
+          "wireplumber.profiles" = {
+            main = {
+              "custom.v-node-links" = "required";
             };
           };
+        };
         */
       };
     };

@@ -6,10 +6,10 @@
   lib,
   pkgs,
   ...
-}:
-{
+}: {
   environment.systemPackages = builtins.attrValues {
-    inherit (pkgs)
+    inherit
+      (pkgs)
       restic
       rclone
       ;

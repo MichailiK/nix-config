@@ -1,13 +1,11 @@
-{
-  iliPresets,
-  ...
-}:
-{
+{iliPresets, ...}: {
   imports = builtins.attrValues {
-    inherit (iliPresets.hive)
+    inherit
+      (iliPresets.hive)
       base
       ;
-    inherit (iliPresets)
+    inherit
+      (iliPresets)
       nix
       openssh
       comma

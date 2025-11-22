@@ -1,4 +1,4 @@
-{pkgs, ...}@args: let
+{pkgs, ...} @ args: let
   lib = pkgs.lib;
 in
   lib.pipe ./. [

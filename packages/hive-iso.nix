@@ -8,7 +8,10 @@
   ...
 }:
 (nixpkgs.lib.nixosSystem {
-  specialArgs = { inherit inputs ilib; nodes = {}; };
+  specialArgs = {
+    inherit inputs ilib;
+    nodes = {};
+  };
   modules =
     [
       ({

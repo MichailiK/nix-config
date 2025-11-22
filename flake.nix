@@ -10,10 +10,7 @@
       inputs.nixpkgs.follows = "nixpkgs-nixos-unstable";
     };
   };
-  outputs = {
-    self,
-    ...
-  } @ inputs: let
+  outputs = {self, ...} @ inputs: let
     # The default/de-facto nixpkgs for this flake
     nixpkgs = inputs.nixpkgs-nixos-unstable;
 
