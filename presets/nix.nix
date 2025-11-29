@@ -71,7 +71,7 @@ in {
         })
         inputs)
       // {
-        nixpkgs =
+        nixpkgs = lib.mkForce (
           if (currentNixpkgsFlake == null)
           then {
             to = {
@@ -79,7 +79,9 @@ in {
               path = builtins.toString pkgs.path;
             };
           }
-          else {flake = currentNixpkgsFlake;};
+          else {
+            flake = currentNixpkgsFlake;
+          });
       };
 
     nixPath = [inputFarm.outPath];

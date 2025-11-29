@@ -4,7 +4,7 @@
     nixpkgs-stable-latest.url = "github:NixOS/nixpkgs?ref=nixos-25.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs?ref=nixpkgs-unstable";
     nixpkgs-unstable-small.url = "github:NixOS/nixpkgs?ref=nixos-unstable-small";
-    colmena.url = "github:zhaofengli/colmena";
+    wire.url = "github:mrshmllow/wire/trunk";
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs-nixos-unstable";
@@ -19,13 +19,13 @@
     modules = import ./modules {inherit lib ilib;};
     iliPresets = import ./presets {inherit lib ilib;};
   in {
-    colmenaHive = import ./hive {inherit inputs nixpkgs ilib modules iliPresets;};
+    wire = import ./hive {inherit inputs nixpkgs ilib modules iliPresets;};
     formatter = ilib.forAllSystems (pkgs: pkgs.alejandra);
     devShells = ilib.forAllSystems (pkgs: {
       default = pkgs.mkShell {
         packages = builtins.attrValues {
           inherit (pkgs) alejandra;
-          inherit (inputs.colmena.packages.${pkgs.system}) colmena;
+          inherit (inputs.wire.packages.${pkgs.system}) wire-small;
         };
       };
     });

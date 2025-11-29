@@ -6,7 +6,7 @@
   iliPresets,
   ...
 }: let
-  colmena = inputs.colmena;
+  wire = inputs.wire;
   lib = nixpkgs.lib;
   instantiatedNixpkgs = import nixpkgs {
     system = "x86_64-linux";
@@ -22,7 +22,7 @@
     nixpkgs = instantiatedNixpkgs;
   };
 in
-  colmena.lib.makeHive (
+  wire.makeHive (
     {
       meta = {
         nixpkgs = instantiatedNixpkgs;
@@ -55,25 +55,21 @@ in
           # Import all modules of our own flake
           lib.flatten (builtins.attrValues modules);
 
-        # Colmena doesn't inject this yet
-        # https://github.com/NixOS/nixpkgs/blob/40c7c335458e1a4a0a961f684d0395ff59a9b8ac/flake.nix#L89
-        config.nixpkgs.flake.source = builtins.toString pkgs.path;
-
         config.networking.hostName = lib.mkDefault name;
         config.deployment = {
           allowLocalDeployment = lib.mkDefault true;
           buildOnTarget = lib.mkDefault true;
-          targetHost = let
-            sshConfig = config.mich.meta.ssh;
-          in
-            lib.mkDefault (
-              if (!sshConfig.enable)
-              then null
-              else if (sshConfig.hostName != null)
-              then sshConfig.hostName
-              else (builtins.head sshConfig.host)
-            );
-          targetUser = lib.mkDefault config.mich.meta.defaultUser.name;
+          target = {
+            host = let
+              sshConfig = config.mich.meta.ssh;
+            in
+              lib.mkDefault (
+                if (!sshConfig.enable)
+                then null
+                else sshConfig.host
+              );
+            user = lib.mkDefault config.mich.meta.defaultUser.name;
+          };
         };
       };
     }
