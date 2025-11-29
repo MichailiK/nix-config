@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{pkgs, lib, ...}: {
+
+  # https://github.com/NixOS/nixpkgs/issues/247608
+  systemd.network.wait-online.enable = lib.mkForce false;
+
   boot.plymouth = {
     enable = true;
     theme = "spinner";
