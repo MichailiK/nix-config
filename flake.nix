@@ -1,7 +1,7 @@
 {
   inputs = {
     nixpkgs-nixos-unstable.url = "github:NixOS/nixpkgs?ref=nixos-unstable";
-    nixpkgs-stable-latest.url = "github:NixOS/nixpkgs?ref=nixos-25.05";
+    nixpkgs-stable-latest.url = "github:NixOS/nixpkgs?ref=nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs?ref=nixpkgs-unstable";
     nixpkgs-unstable-small.url = "github:NixOS/nixpkgs?ref=nixos-unstable-small";
     wire.url = "github:mrshmllow/wire/trunk";

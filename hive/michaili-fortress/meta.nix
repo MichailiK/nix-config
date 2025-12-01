@@ -9,6 +9,7 @@
       ;
     inherit
       (iliPresets)
+      audio-vst
       comma
       nix
       desktop

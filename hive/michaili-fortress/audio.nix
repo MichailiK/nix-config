@@ -1,11 +1,16 @@
 {pkgs, ...}: {
   services.pulseaudio.enable = false;
+
   environment.systemPackages = [
     pkgs.qpwgraph
     pkgs.easyeffects
+    pkgs.carla
+    pkgs.lsp-plugins
+    pkgs.hello
   ];
   services = {
     pipewire = {
+      jack.enable = true;
       configPackages = [
         (pkgs.writeTextDir "share/pipewire/pipewire.conf.d/10-virtual-sinks.conf" ''
             context.objects = [

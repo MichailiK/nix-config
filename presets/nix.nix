@@ -10,10 +10,11 @@
   inherit (lib) mapAttrs' mapAttrsToList filterAttrs;
 
   # hacky way to figure out which nixpkgs flake is being used in this system
-  currentNixpkgsFlake = let
-    pkgsPathString = builtins.toString pkgs.path;
-  in
-    lib.findFirst (flake: flake.outPath == pkgsPathString) null (builtins.attrValues inputs);
+  currentNixpkgsFlake =
+    lib.findFirst
+    (flake: flake.outPath == builtins.toString pkgs.path)
+    null
+    (builtins.attrValues inputs);
 
   inputFarm = pkgs.linkFarm "input-farm" (
     mapAttrsToList
@@ -81,7 +82,8 @@ in {
           }
           else {
             flake = currentNixpkgsFlake;
-          });
+          }
+        );
       };
 
     nixPath = [inputFarm.outPath];
