@@ -1,6 +1,10 @@
 {iliPresets, ...}: {
   imports = builtins.attrValues {
     inherit
+      (iliPresets.desktop)
+      kde
+      ;
+    inherit
       (iliPresets.hive)
       base
       keepassxc
@@ -12,7 +16,6 @@
       audio-vst
       comma
       nix
-      desktop
       short-wireless
       openssh
       ;

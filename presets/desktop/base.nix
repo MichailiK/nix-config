@@ -1,17 +1,16 @@
-{pkgs, lib, ...}: {
-
+{
+  pkgs,
+  lib,
+  ...
+}: {
   # https://github.com/NixOS/nixpkgs/issues/247608
   systemd.network.wait-online.enable = lib.mkForce false;
+  networking.networkmanager.enable = true;
+  networking.useNetworkd = true;
 
   boot.plymouth = {
     enable = true;
     theme = "spinner";
-  };
-
-  services.desktopManager.plasma6.enable = true;
-  services.displayManager.sddm = {
-    enable = true;
-    wayland.enable = true;
   };
 
   services.pulseaudio.enable = false;
@@ -21,9 +20,6 @@
     wireplumber.enable = true;
     pulse.enable = true;
   };
-
-  networking.networkmanager.enable = true;
-  networking.useNetworkd = true;
 
   fonts = {
     fontconfig.useEmbeddedBitmaps = true;
