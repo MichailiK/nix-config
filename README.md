@@ -13,4 +13,4 @@ Some of the highlights & interesting things in this flake:
   the node with.
 - Various `presets` nodes can make use of, allowing the right level of granuality
 
-[wire]: https://github.com/mrshmllow/wire
+[wire]: https://github.com/forallsys/wire

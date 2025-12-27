@@ -1,4 +1,4 @@
-{...}: {
+{iliPresets, ...}: {
   mich.meta = {
     ssh = {
       knowNodesPublicKeys = true;
@@ -13,7 +13,18 @@
   networking.hostName = "raptor";
   networking.domain = "michai.li";
   time.timeZone = "UTC";
-  i18n.defaultLocale = "en_US.UTF-8";
+
+  imports = builtins.attrValues {
+    inherit
+      (iliPresets.hive)
+      base
+      ;
+    inherit
+      (iliPresets)
+      nix
+      openssh
+      ;
+  };
 
   system.stateVersion = "24.11";
 }

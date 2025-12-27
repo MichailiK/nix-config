@@ -8,11 +8,6 @@
   networking.networkmanager.enable = true;
   networking.useNetworkd = true;
 
-  boot.plymouth = {
-    enable = true;
-    theme = "spinner";
-  };
-
   services.pulseaudio.enable = false;
   services.pipewire = {
     enable = true;

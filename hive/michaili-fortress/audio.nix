@@ -3,7 +3,6 @@
 
   environment.systemPackages = [
     pkgs.qpwgraph
-    pkgs.easyeffects
     pkgs.carla
     pkgs.lsp-plugins
     pkgs.hello

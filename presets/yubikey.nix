@@ -24,4 +24,7 @@
   # hack, see https://wiki.archlinux.org/title/GnuPG#Smartcards
   # pcscd is only needed for using yubikey-manager, so pcscd can be enabled when needed
   systemd.units."pcscd.service".enable = lib.mkOverride 75 false;
+
+  # conflicts with gpg ssh agent
+  services.gnome.gcr-ssh-agent.enable = false;
 }

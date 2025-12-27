@@ -1,4 +1,4 @@
-{...}: {
+{iliPresets, ...}: {
   mich.meta = {
     ssh = {
       knowNodesPublicKeys = true;
@@ -12,7 +12,28 @@
 
   networking.hostName = "michaili-fortress";
   time.timeZone = "Europe/Berlin";
-  i18n.defaultLocale = "en_US.UTF-8";
+
+  imports = builtins.attrValues {
+    inherit
+      (iliPresets.desktop)
+      gnome
+      ;
+    inherit
+      (iliPresets.hive)
+      base
+      keepassxc
+      restic
+      yubikey
+      ;
+    inherit
+      (iliPresets)
+      audio-vst
+      comma
+      nix
+      short-wireless
+      openssh
+      ;
+  };
 
   system.stateVersion = "23.11";
 }

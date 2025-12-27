@@ -4,7 +4,7 @@
     nixpkgs-stable-latest.url = "github:NixOS/nixpkgs?ref=nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs?ref=nixpkgs-unstable";
     nixpkgs-unstable-small.url = "github:NixOS/nixpkgs?ref=nixos-unstable-small";
-    wire.url = "github:mrshmllow/wire/trunk";
+    wire.url = "github:forallsys/wire/trunk";
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs-nixos-unstable";
@@ -13,13 +13,16 @@
   outputs = {self, ...} @ inputs: let
     # The default/de-facto nixpkgs for this flake
     nixpkgs = inputs.nixpkgs-nixos-unstable;
-
     lib = nixpkgs.lib;
-    ilib = import ./ilib.nix {inherit lib nixpkgs;};
+
+    ilib = import ./ilib.nix {inherit nixpkgs lib;};
     modules = import ./modules {inherit lib ilib;};
     iliPresets = import ./presets {inherit lib ilib;};
+    iliPackages = import ./packages {inherit inputs nixpkgs lib ilib modules iliPresets;};
+    hive = import ./hive {inherit inputs nixpkgs lib ilib modules iliPresets iliPackages;};
   in {
-    wire = import ./hive {inherit inputs nixpkgs ilib modules iliPresets;};
+    inherit (hive) wire nixosConfigurations;
+
     formatter = ilib.forAllSystems (pkgs: pkgs.alejandra);
     devShells = ilib.forAllSystems (pkgs: {
       default = pkgs.mkShell {
@@ -30,7 +33,7 @@
       };
     });
     nixosModules = modules;
-    packages = ilib.forAllSystems (pkgs: import ./packages {inherit pkgs nixpkgs inputs ilib modules iliPresets;});
+    packages = ilib.forAllSystems (pkgs: iliPackages pkgs);
     lib = ilib;
   };
 }

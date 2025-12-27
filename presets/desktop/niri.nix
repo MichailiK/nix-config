@@ -1,3 +1,4 @@
+# Very incomplete niri configuration
 {
   pkgs,
   lib,
@@ -7,6 +8,7 @@
 
   environment.systemPackages = builtins.attrValues {
     inherit (pkgs) alacritty fuzzel xwayland-satellite swaylock;
+    inherit (pkgs.kdePackages) konsole;
   };
 
   services.greetd = {
