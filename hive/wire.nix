@@ -6,7 +6,7 @@
   ilib,
   modules,
   iliPresets,
-  iliPackages,
+  iliPackages',
   ...
 }: let
   wire = inputs.wire;

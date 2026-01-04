@@ -3,11 +3,11 @@
 # will need to be copied from somewhere.
 {
   pkgs,
-  iliPackages,
+  iliPkgs,
   ...
 }: {
   mich.meta.defaultUser.packages = [
     pkgs.keepassxc
-    iliPackages.keepassxc-ili
+    iliPkgs.keepassxc-ili
   ];
 }

@@ -6,7 +6,7 @@
   ilib,
   modules,
   iliPresets,
-  iliPackages,
+  iliPackages',
   ...
 }:
 lib.fix (
@@ -18,7 +18,7 @@ lib.fix (
           value.modules
           ++ [
             ({lib, ...}: {
-              # defaults
+              # use directory name as hostname by default
               config.networking.hostName = lib.mkDefault name;
             })
           ];

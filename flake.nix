@@ -18,8 +18,8 @@
     ilib = import ./ilib.nix {inherit nixpkgs lib;};
     modules = import ./modules {inherit lib ilib;};
     iliPresets = import ./presets {inherit lib ilib;};
-    iliPackages = import ./packages {inherit inputs nixpkgs lib ilib modules iliPresets;};
-    hive = import ./hive {inherit inputs nixpkgs lib ilib modules iliPresets iliPackages;};
+    iliPackages' = import ./packages {inherit inputs nixpkgs lib ilib modules iliPresets;};
+    hive = import ./hive {inherit inputs nixpkgs lib ilib modules iliPresets iliPackages';};
   in {
     inherit (hive) wire nixosConfigurations;
 
@@ -33,7 +33,7 @@
       };
     });
     nixosModules = modules;
-    packages = ilib.forAllSystems (pkgs: iliPackages pkgs);
+    packages = ilib.forAllSystems (pkgs: iliPackages' pkgs);
     lib = ilib;
   };
 }

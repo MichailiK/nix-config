@@ -5,7 +5,7 @@
   ilib,
   modules,
   iliPresets,
-  iliPackages,
+  iliPackages',
   ...
 } @ args: let
   nodes = import ./nodes.nix args;

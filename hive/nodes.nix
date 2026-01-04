@@ -13,7 +13,7 @@
   ilib,
   modules,
   iliPresets,
-  iliPackages,
+  iliPackages',
   ...
 }: let
   # default nixpkgs to use for nodes if they dont define one
@@ -21,9 +21,7 @@
 
   # Special args that should always be included by default
   # contains flake inputs, ilib, iliPresets and iliPacakges
-  defaultSpecialArgs = {
-    inherit inputs ilib iliPresets iliPackages;
-  };
+  defaultSpecialArgs = {inherit inputs ilib iliPresets iliPackages';};
 
   # These are "special files" that should not be treated as Nix modules
   # and thus must not be imported with the module system.
@@ -38,12 +36,12 @@ in
   ilib.mapSubDirectories (directory: let
     meta =
       if (builtins.pathExists ./${directory}/meta.nix)
-      then (import ./${directory}/meta.nix (inputs // {inherit lib ilib iliPresets iliPackages;}))
+      then (import ./${directory}/meta.nix (inputs // {inherit lib ilib iliPresets iliPackages';}))
       else {};
+    nodeNixpkgs = meta.nixpkgs or defaultNixpkgs;
   in {
     # The nixpkgs this node should be evaluated with.
-    # Null if the hive's default nixpkgs should be used.
-    nixpkgs = meta.nixpkgs or defaultNixpkgs;
+    nixpkgs = nodeNixpkgs;
 
     # The specialArgs that should be used for this node.
     specialArgs = let
@@ -53,8 +51,8 @@ in
         else if (builtins.isFunction meta.specialArgs)
         then
           meta.specialArgs {
-            inherit inputs ilib iliPresets iliPackages;
-            nixpkgs = meta.nixpkgs or defaultNixpkgs;
+            inherit inputs ilib iliPresets iliPackages';
+            nixpkgs = nodeNixpkgs;
           }
         else meta.specialArgs;
     in
