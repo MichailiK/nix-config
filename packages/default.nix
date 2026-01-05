@@ -10,11 +10,18 @@ lib.pipe ./. [
         && (fileType != "regular" || (lib.hasSuffix ".nix" fileName))
     )
   )
-  (lib.mapAttrs' (fileName: fileType: {
-    name =
-      if (fileType == "regular")
-      then lib.removeSuffix ".nix" fileName
-      else fileName;
-    value = import ./${fileName} (args // {inherit pkgs;});
-  }))
+  (
+    v:
+      lib.fix (
+        self:
+          lib.mapAttrs' (fileName: fileType: {
+            name =
+              if (fileType == "regular")
+              then lib.removeSuffix ".nix" fileName
+              else fileName;
+            value = pkgs.callPackage ./${fileName} (args // self);
+          })
+          v
+      )
+  )
 ]

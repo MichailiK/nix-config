@@ -1,0 +1,13 @@
+diff --git a/server/Cargo.toml b/server/Cargo.toml
+index ed833ea..d94621b 100644
+--- a/server/Cargo.toml
++++ b/server/Cargo.toml
+@@ -24,7 +24,7 @@ anyhow = "1.0.18"
+ clap = { version = "4", features = ["derive", "env", "string", "wrap_help"] }
+ dirs = "5"
+ sequoia-directories = "0.1"
+-sequoia-keystore = { path = "../keystore", version = "0.7" }
++sequoia-keystore = { path = "../keystore", version = "0.7", features = ["openpgp-card"] }
+ sequoia-ipc = { version = "0.36", default-features = false }
+ sequoia-openpgp = { version = "2", default-features = false }
+ 

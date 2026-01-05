@@ -1,0 +1,172 @@
+diff --git a/Cargo.lock b/Cargo.lock
+index b491b7c..7410e34 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -496,6 +496,27 @@ dependencies = [
+  "capnp",
+ ]
+ 
++[[package]]
++name = "card-backend"
++version = "0.2.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "bd3ee3a298842065dc489180c34a4fe4bbbb8643bb422009d79558a099fb42e5"
++dependencies = [
++ "thiserror 1.0.69",
++]
++
++[[package]]
++name = "card-backend-pcsc"
++version = "0.5.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "68bb0b707b1b6b058ed93abd70ef65703ed6fd4150d32a0d735b78cfa61cbb35"
++dependencies = [
++ "card-backend",
++ "iso7816-tlv",
++ "log",
++ "pcsc",
++]
++
+ [[package]]
+ name = "cast5"
+ version = "0.11.1"
+@@ -1637,6 +1658,12 @@ version = "0.3.9"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "d231dfb89cfffdbc30e7fc41579ed6066ad03abda9e567ccafae602b97ec5024"
+ 
++[[package]]
++name = "hex-slice"
++version = "0.1.4"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "5491a308e0214554f07a81d8944abe45f552871c12e3c3c6e7e5d354039a6c4c"
++
+ [[package]]
+ name = "hickory-client"
+ version = "0.24.4"
+@@ -2120,6 +2147,15 @@ version = "1.70.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "7943c866cc5cd64cbc25b2e01621d07fa8eb2a1a23160ee81ce38704e97b8ecf"
+ 
++[[package]]
++name = "iso7816-tlv"
++version = "0.4.4"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "7660d28d24a831d690228a275d544654a30f3b167a8e491cf31af5fe5058b546"
++dependencies = [
++ "untrusted",
++]
++
+ [[package]]
+ name = "itertools"
+ version = "0.11.0"
+@@ -2640,6 +2676,22 @@ version = "0.3.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "c08d65885ee38876c4f86fa503fb49d7b507c2b62552df7c70b2fce627e06381"
+ 
++[[package]]
++name = "openpgp-card"
++version = "0.5.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "56d9f9032bc868b82b289dddf471434b96c1f229898c2497d847c5b056a2cc6d"
++dependencies = [
++ "card-backend",
++ "chrono",
++ "hex-slice",
++ "log",
++ "nom",
++ "secrecy",
++ "sha2",
++ "thiserror 1.0.69",
++]
++
+ [[package]]
+ name = "openpgp-cert-d"
+ version = "0.3.4"
+@@ -2791,6 +2843,25 @@ version = "1.0.15"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "57c0d7b74b563b49d38dae00a0c37d4d6de9b432382b2892f0574ddcae73fd0a"
+ 
++[[package]]
++name = "pcsc"
++version = "2.9.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "7dd833ecf8967e65934c49d3521a175929839bf6d0e497f3bd0d3a2ca08943da"
++dependencies = [
++ "bitflags",
++ "pcsc-sys",
++]
++
++[[package]]
++name = "pcsc-sys"
++version = "1.3.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "e14ef017e15d2e5592a9e39a346c1dbaea5120bab7ed7106b210ef58ebd97003"
++dependencies = [
++ "pkg-config",
++]
++
+ [[package]]
+ name = "pem-rfc7468"
+ version = "0.7.0"
+@@ -3493,6 +3564,15 @@ dependencies = [
+  "zeroize",
+ ]
+ 
++[[package]]
++name = "secrecy"
++version = "0.8.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "9bd1c54ea06cfd2f6b63219704de0b9b4f72dcc2b8fdef820be6cd799780e91e"
++dependencies = [
++ "zeroize",
++]
++
+ [[package]]
+ name = "security-framework"
+ version = "2.11.1"
+@@ -3628,6 +3708,7 @@ dependencies = [
+  "sequoia-ipc",
+  "sequoia-keystore-backend",
+  "sequoia-keystore-gpg-agent",
++ "sequoia-keystore-openpgp-card",
+  "sequoia-keystore-softkeys",
+  "sequoia-openpgp",
+  "thiserror 2.0.12",
+@@ -3670,6 +3751,24 @@ dependencies = [
+  "tokio",
+ ]
+ 
++[[package]]
++name = "sequoia-keystore-openpgp-card"
++version = "0.2.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "970488470a939f09258c748fce866ca240f7b5ec66df3532c8b60148c39a2351"
++dependencies = [
++ "anyhow",
++ "async-trait",
++ "card-backend-pcsc",
++ "futures",
++ "log",
++ "openpgp-card",
++ "openpgp-cert-d",
++ "sequoia-keystore-backend",
++ "sequoia-openpgp",
++ "tokio",
++]
++
+ [[package]]
+ name = "sequoia-keystore-softkeys"
+ version = "0.7.0"
+diff --git a/Cargo.toml b/Cargo.toml
+index b0d655d..882bf42 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -51,7 +51,7 @@ once_cell = "1.17"
+ reqwest = { version = ">=0.12, <0.13", features = ["hickory-dns", "stream"] }
+ sequoia-cert-store = { version = "0.7", default-features = false }
+ sequoia-ipc = { version = "0.36", default-features = false }
+-sequoia-keystore = { version = "0.7" }
++sequoia-keystore = { version = "0.7", features = ["openpgp-card"] }
+ sequoia-wot = { version = "0.14", default-features = false }
+ tempfile = "3.1"
+ thiserror = { version = ">=1, <3" }
