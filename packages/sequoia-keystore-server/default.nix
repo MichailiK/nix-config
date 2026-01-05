@@ -11,19 +11,19 @@
 }:
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "sequoia-keystore-server";
-  version = "0.2.0";
+  version = "0.3.0-dev";
 
   src = applyPatches {
     src = fetchFromGitLab {
       owner = "sequoia-pgp";
       repo = "sequoia-keystore";
-      tag = "server/v${finalAttrs.version}";
-      hash = "sha256-UqlrMh1dDnykr69kR+fikx+mk9WsF9Y8jsfazKCvXV4=";
+      rev = "0353be8de07d7807765f95d80012dfebff731416";
+      hash = "sha256-OkyTJN/beJHB5VrBVVBd7ldglom+B+/P3a1C61O+fuw=";
     };
     patches = [./cargo.patch];
   };
 
-  cargoHash = "sha256-uTpJzYncRQBs/mXiJylqmNw0/j4ia1MM4hhZ20g9Muw=";
+  cargoHash = "sha256-HQTYwFanBAM7LIyPZx1po/lBvCNYtJSkDZzhjg1u7kc=";
 
   buildAndTestSubdir = "server";
 
