@@ -19,7 +19,7 @@
           format = "openpgp"
 
           [gpg "openpgp"]
-          program = "${lib.getExe' pkgs.gnupg "gpg"}"
+          program = "${lib.getExe config.programs.gnupg.package}"
 
           [tag]
           gpgSign = true

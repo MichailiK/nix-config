@@ -17,8 +17,8 @@
   mich.meta.defaultUser.packages = [
     (pkgs.writeShellScriptBin "restic-proton" ''
       RESTIC_REPOSITORY="rclone:proton:/restic/archive" \
-      RESTIC_PASSWORD_COMMAND="${lib.getExe' pkgs.gnupg "gpg"} -d ~/.local/share/ili/restic_secret.gpg" \
-      RCLONE_PASSWORD_COMMAND="${lib.getExe' pkgs.gnupg "gpg"} -d ~/.local/share/ili/rclone_secret.gpg" \
+      RESTIC_PASSWORD_COMMAND="${lib.getExe config.programs.gnupg.package} -d ~/.local/share/ili/restic_secret.gpg" \
+      RCLONE_PASSWORD_COMMAND="${lib.getExe config.programs.gnupg.package} -d ~/.local/share/ili/rclone_secret.gpg" \
       exec "${lib.getExe pkgs.restic}" "$@"
     '')
   ];
