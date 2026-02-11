@@ -1,23 +1,32 @@
 # KeePassXC utilities for the default user.
 # Note that ~/.local/share/ili/{keepassxc-db.kdbx,keepassxc-db-password.gpg}
 # will need to be copied from somewhere.
-{pkgs, ...}: let
+{
+  lib,
+  stdenvNoCC,
+  gnupg,
+  keepassxc,
+  writeShellScript,
+  makeDesktopItem,
+  copyDesktopItems,
+  ...
+}: let
   keepassxc-wrap =
-    pkgs.writeShellScript "keepassxc-ili"
+    writeShellScript "keepassxc-ili"
     ''
       BASE_DIR="''${XDG_DATA_HOME:-$HOME/.local/share}"/ili
-      ${pkgs.lib.getExe pkgs.gnupg} --decrypt "$BASE_DIR"/keepassxc-db-password.gpg | ${pkgs.lib.getExe pkgs.keepassxc} --pw-stdin "$BASE_DIR"/keepassxc-db.kdbx
+      ${lib.getExe gnupg} --decrypt "$BASE_DIR"/keepassxc-db-password.gpg | ${lib.getExe keepassxc} --pw-stdin "$BASE_DIR"/keepassxc-db.kdbx
     '';
   keepassxc-cli-wrap =
-    pkgs.writeShellScript "keepassxc-cli-ili"
+    writeShellScript "keepassxc-cli-ili"
     ''
       BASE_DIR="''${XDG_DATA_HOME:-$HOME/.local/share}"/ili
-      ${pkgs.lib.getExe pkgs.gnupg} --quiet --decrypt "$BASE_DIR"/keepassxc-db-password.gpg | ${pkgs.lib.getExe' pkgs.keepassxc "keepassxc-cli"} "$1" "$BASE_DIR"/keepassxc-db.kdbx "''${@:2}"
+      ${lib.getExe gnupg} --quiet --decrypt "$BASE_DIR"/keepassxc-db-password.gpg | ${lib.getExe' keepassxc "keepassxc-cli"} "$1" "$BASE_DIR"/keepassxc-db.kdbx "''${@:2}"
     '';
 in
-  pkgs.stdenvNoCC.mkDerivation {
-    name = "keepassxc-ili";
-    version = pkgs.keepassxc.version;
+  stdenvNoCC.mkDerivation {
+    pname = "keepassxc-ili";
+    version = keepassxc.version;
 
     dontUnpack = true;
 
@@ -31,9 +40,9 @@ in
       runHook postInstall
     '';
 
-    nativeBuildInputs = [pkgs.copyDesktopItems];
+    nativeBuildInputs = [copyDesktopItems];
     desktopItems = [
-      (pkgs.makeDesktopItem {
+      (makeDesktopItem {
         name = "keepassxc-ili";
         desktopName = "KeePassXC ili Database";
         exec = "keepassxc-ili";
