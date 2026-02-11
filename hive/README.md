@@ -12,14 +12,16 @@ as NixOS modules & automatically imported.
 
 ## Deployment Tools
 
-The `tools` directory contains implementations of deploymnt.
+The `tools` directory contains implementations of deployment tools, to be able
+to build & deploy configuration changes to your nodes.
+
 Currently, two tools are implemented:
 
 - The usual `nixosConfigurations`/`nixos-rebuild` found in most flakes
 - [wire](https://github.com/forallsys/wire)
 
-This means that, when creating a node, you are able to build & deploy it
-using either `nixos-rebuild` or `wire`.
+This means that, when creating or updating a node's configuration, you are able
+to build & deploy changes using either `nixos-rebuild` or `wire`.
 
 See [tools `README`](./tools/README.md) for more info or how to integrate other
 deployment tools/methods.
@@ -27,11 +29,11 @@ deployment tools/methods.
 ## Create new node
 
 To make a new node in the hive, simply create a directory for it in the `nodes`
-directory (ideally named after the node's hostname.)
-It will automatically get picked up in deployment tools (e.g. `nixos-rebuild`).
+directory (ideally named after the node's hostname.) & start creating Nix files.
+The new node will get automatically picked up in deployment tools.
 
-(Remember that flakes only consider staged/committed git files, make sure you
-`git add` files before trying to build/apply.)
+> Remember that flakes only consider staged/committed git files, make sure you
+> `git add` files before trying to build/apply.
 
 ### meta.nix
 
@@ -45,7 +47,7 @@ an attribute set that may contain:
 - `nixpkgs`: A specific nixpkgs flake to use
 - `imports`: any additional modules to import
 - `specialArgs`: any specialArgs to add to the node
-- `excludeImports`: list of [fileset](https://nixos.org/manual/nixpkgs/unstable/#sec-functions-library-fileset)
+- `excludeImports`: a [fileset](https://nixos.org/manual/nixpkgs/unstable/#sec-functions-library-fileset)
   or list of paths which get excluded from automatic import.
 
 All attributes are optional.
@@ -53,19 +55,9 @@ All attributes are optional.
 Example:
 
 ```nix
-{ nixpkgs-latest-stable, iliPresets, ... }: {
+{ inputs, nixpkgs-latest-stable, iliPresets, ... }: {
   nixpkgs = nixpkgs-latest-stable;
-  imports = builtins.attrValues {
-    inherit
-      (iliPresets.hive)
-      base
-      yubikey
-      ;
-    inherit
-      (iliPresets)
-      flakes
-      ;
-  };
+  imports = [ inputs.foobar.nixosModules.default ];
   specialArgs = {
     something = "abc";
     utils = import ./utilities.nix; 
