@@ -12,7 +12,7 @@ as NixOS modules & automatically imported.
 
 ## Deployment Tools
 
-The `tools` directory contains implementations of [deployment tools](#tooling).
+The `tools` directory contains implementations of deploymnt.
 Currently, two tools are implemented:
 
 - The usual `nixosConfigurations`/`nixos-rebuild` found in most flakes
@@ -21,7 +21,7 @@ Currently, two tools are implemented:
 This means that, when creating a node, you are able to build & deploy it
 using either `nixos-rebuild` or `wire`.
 
-See [tools README](./tools/README.md) for more info or how to integrate other
+See [tools `README`](./tools/README.md) for more info or how to integrate other
 deployment tools/methods.
 
 ## Create new node
