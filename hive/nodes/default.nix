@@ -1,11 +1,12 @@
-# this file gives deployment tools every node of this hive as an attrset.
-# the values of the attrset is another attrset with the following attributes:
+# this provides a consistent representation of nodes, to be used by deployment tools.
+# this function returns an attrset with sub-directories (the nodes)
+# mapped to an attrset with the following attributes:
 # - nixpkgs: which (flake input) nixpkgs to use for this node
 # - specialArgs: special args to pass down to this node
 # - modules: which modules to import for this node
 #
 # none of these values are null, and deployment tool implementations should
-# always consume these values for consistency across multiple deployment tools.
+# always use these values for consistency across all deployment tools.
 {
   inputs,
   nixpkgs,
@@ -78,6 +79,8 @@ in
       # Any imports declared in the meta.nix
       ++ (meta.imports or [])
       # Include all modules in this flake
-      ++ defaultModules;
+      ++ defaultModules
+      # A module that sets the hostname to the directory name by default
+      ++ [({lib, ...}: {config.networking.hostName = lib.mkDefault directory;})];
   })
   ./.

@@ -1,28 +1,23 @@
 # Hive
 
-Contains all the systems/nodes for this flake.
-
-## Tooling
-
-The hive has been designed to be agnostic to deployment tools/methods.
-
-Currently, two deployment tools/methods are implemented:
-- The usual `nixosConfigurations` found in most flakes
-- [wire](https://github.com/forallsys/wire)
-
-See [tooling.md](./tooling.md) for more info or how to integrate other deployment
-tools/methods (such as Colmena)
+The hive contains all the systems/nodes for this flake.
 
 ## Nodes
 
 The directories inside this directory are considered nodes/systems/hosts.
 All nix files within the directory (excluding [meta.nix](#meta.nix) and
-any excluded files it defines) are treated as modules & automatically imported. 
+any excluded files it defines) are treated as modules & automatically imported.
+The nodes are exposed to all [deployment tools](#tooling) implemented in this
+flake, e.g. `nixosConfigurations`/`nixos-switch`.
 
 ### Create new
 
-To make a new node in the hive, simply create a directory for it, ideally
-named after the node's hostname. It will automatically get picked up.
+To make a new node in the hive, simply create a directory for it in the `nodes`
+directory (ideally named after the node's hostname.)
+It will automatically get picked up in deployment tools (e.g. `nixos-rebuild`).
+
+Remember that flakes only consider staged/committed git files, make sure you
+`git add` files before trying to apply a configuration.
 
 ### meta.nix
 
@@ -55,12 +50,23 @@ Example:
     inherit
       (iliPresets)
       flakes
-      desktop
       ;
   };
   specialArgs = {
     something = "abc";
+    utils = import ./utilities.nix; 
   };
-  excludeImports = [ ./domains ];
+  excludeImports = [ ./domains ./utilities.nix ];
 }
 ```
+
+## Tooling
+
+The hive has been designed to be agnostic to deployment tools/methods.
+
+Currently, two deployment tools/methods are implemented:
+- The usual `nixosConfigurations` found in most flakes
+- [wire](https://github.com/forallsys/wire)
+
+See [tools README](./tools/README.md) for more info or how to integrate other
+deployment tools/methods.

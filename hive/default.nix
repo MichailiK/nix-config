@@ -8,8 +8,7 @@
   iliPackages',
   ...
 } @ args: let
-  nodes = import ./nodes.nix args;
-in {
-  wire = import ./wire.nix (args // {inherit nodes;});
-  nixosConfigurations = import ./nixosConfigurations.nix (args // {inherit nodes;});
-}
+  nodes = import ./nodes args;
+  toolArgs = args // {inherit nodes;};
+in
+  (builtins.mapAttrs (_: tool: tool toolArgs) (ilib.importNixInDirectory ./tools)) // {_nodes = nodes;}

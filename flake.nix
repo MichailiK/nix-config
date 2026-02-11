@@ -21,8 +21,6 @@
     iliPackages' = import ./packages {inherit inputs nixpkgs lib ilib modules iliPresets;};
     hive = import ./hive {inherit inputs nixpkgs lib ilib modules iliPresets iliPackages';};
   in {
-    inherit (hive) wire nixosConfigurations;
-
     formatter = ilib.forAllSystems (pkgs: pkgs.alejandra);
     devShells = ilib.forAllSystems (pkgs: {
       default = pkgs.mkShell {
@@ -35,5 +33,10 @@
     nixosModules = modules;
     packages = ilib.forAllSystems (pkgs: iliPackages' pkgs);
     lib = ilib;
+
+    # Hive-related attributes
+    _nodes = hive._nodes;
+    wire = hive.wire;
+    nixosConfigurations = hive.nixosConfigurations;
   };
 }

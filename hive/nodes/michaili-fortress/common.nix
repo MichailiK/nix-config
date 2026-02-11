@@ -16,7 +16,7 @@
   imports = builtins.attrValues {
     inherit
       (iliPresets.desktop)
-      gnome
+      kde
       ;
     inherit
       (iliPresets.hive)

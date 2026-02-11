@@ -44,8 +44,6 @@ in
         pkgs,
         ...
       }: {
-        # use directory name as hostname by default
-        config.networking.hostName = lib.mkDefault name;
         # wire deployment specific configuration
         config.deployment = {
           allowLocalDeployment = lib.mkDefault true;
