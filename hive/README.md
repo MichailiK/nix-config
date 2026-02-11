@@ -1,23 +1,37 @@
 # Hive
 
-The hive contains all the systems/nodes for this flake.
+The hive contains all the systems/nodes for this flake, as well as how to
+deploy changes to the nodes.
 
 ## Nodes
 
-The directories inside this directory are considered nodes/systems/hosts.
-All nix files within the directory (excluding [meta.nix](#meta.nix) and
-any excluded files it defines) are treated as modules & automatically imported.
-The nodes are exposed to all [deployment tools](#tooling) implemented in this
-flake, e.g. `nixosConfigurations`/`nixos-switch`.
+The `nodes` directory contain all the nodes/systems/hosts this hive hosts.
+Each node has its own directory, and all nix files within their directories
+(excluding [meta.nix](#meta.nix) and any excluded files it defines) are treated
+as NixOS modules & automatically imported.
 
-### Create new
+## Deployment Tools
+
+The `tools` directory contains implementations of [deployment tools](#tooling).
+Currently, two tools are implemented:
+
+- The usual `nixosConfigurations`/`nixos-rebuild` found in most flakes
+- [wire](https://github.com/forallsys/wire)
+
+This means that, when creating a node, you are able to build & deploy it
+using either `nixos-rebuild` or `wire`.
+
+See [tools README](./tools/README.md) for more info or how to integrate other
+deployment tools/methods.
+
+## Create new node
 
 To make a new node in the hive, simply create a directory for it in the `nodes`
 directory (ideally named after the node's hostname.)
 It will automatically get picked up in deployment tools (e.g. `nixos-rebuild`).
 
-Remember that flakes only consider staged/committed git files, make sure you
-`git add` files before trying to apply a configuration.
+(Remember that flakes only consider staged/committed git files, make sure you
+`git add` files before trying to build/apply.)
 
 ### meta.nix
 
@@ -59,14 +73,3 @@ Example:
   excludeImports = [ ./domains ./utilities.nix ];
 }
 ```
-
-## Tooling
-
-The hive has been designed to be agnostic to deployment tools/methods.
-
-Currently, two deployment tools/methods are implemented:
-- The usual `nixosConfigurations` found in most flakes
-- [wire](https://github.com/forallsys/wire)
-
-See [tools README](./tools/README.md) for more info or how to integrate other
-deployment tools/methods.

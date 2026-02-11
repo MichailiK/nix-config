@@ -170,3 +170,22 @@ git+file://...
 Now, regardless of whether you are using `wire`, `nixos-rebuild` or any other
 deployment tool that's implemented, all tools should end up building the
 (near) identical system.
+
+
+### (Optional) add deployment tool to the flake's devShells
+
+You may want to add the deployment tool to the `flake.nix`'s devShells.
+
+It may look something like:
+
+```diff
+ devShells = ilib.forAllSystems (pkgs: {
+   default = pkgs.mkShell {
+     packages = builtins.attrValues {
+       # ...
++      inherit (pkgs) nixos-rebuild;
++      # non-nixpkgs example: `inherit (inputs.wire.packages.${pkgs.system}) wire`
+     };
+   };
+ });
+```
