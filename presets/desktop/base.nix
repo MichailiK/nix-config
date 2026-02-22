@@ -20,13 +20,6 @@
     fontconfig.useEmbeddedBitmaps = true;
     enableDefaultPackages = true;
   };
-  /*
-  services.printing.enable = true;
-  hardware.sane = {
-    enable = true;
-    extraBackends = [pkgs.sane-airscan];
-  };
-  */
 
   programs.kdeconnect.enable = true;
   programs.firefox = {
