@@ -40,6 +40,7 @@
   hardware.sane = {
     enable = true;
     extraBackends = [pkgs.sane-airscan];
+    disabledDefaultBackends = ["escl"]; # sane-airscan is more maintained & already covers eSCL devices
   };
   services.udev.packages = [pkgs.sane-airscan];
 
