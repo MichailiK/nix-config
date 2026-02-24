@@ -22,6 +22,7 @@
       (iliPresets.hive)
       base
       keepassxc
+      printing
       restic
       yubikey
       ;
