@@ -46,10 +46,12 @@
     in ''
       options kvmfr static_size_mb=32
       options vfio-pci ids=${builtins.concatStringsSep "," pciIds}
+      softdep nvme pre: vfio-pci
     '';
+    # ^ maybe add `softdep drm pre: vfio-pci`?
     kernelParams = [
       "intel_iommu=on"
-      "split_lock_detect=warn" # TODO: Figure out whether I even need to disdable split lock deteciton
+      "split_lock_detect=warn" # TODO: Figure out whether I even need to disable split lock deteciton
     ];
   };
 
