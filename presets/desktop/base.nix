@@ -37,7 +37,7 @@
       inherit
         (pkgs)
         vlc
-        vesktop
+        equibop
         handbrake
         vscode-fhs
         zed-editor
