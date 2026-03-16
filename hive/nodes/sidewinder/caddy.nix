@@ -2,8 +2,8 @@
   services.caddy = {
     enable = true;
     package = pkgs.caddy.withPlugins {
-      plugins = ["github.com/mholt/caddy-l4@v0.0.0-20260104223739-97fa8c1b6618"];
-      hash = "sha256-9tFRk+ULLh99eSPiNtiusH9yqcIJkVuJOEaeS43s8Tc=";
+      plugins = ["github.com/mholt/caddy-l4@v0.1.0"];
+      hash = "sha256-Q3Og34QO9Zbecf5jZCj+cr8riGW4/T44uJcRc3gU5aE=";
     };
     virtualHosts = {
       "michai.li" = {
