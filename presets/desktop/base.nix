@@ -39,7 +39,7 @@
         vlc
         equibop
         handbrake
-        vscode-fhs
+        vscodium
         zed-editor
         ;
     };
