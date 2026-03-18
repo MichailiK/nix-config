@@ -26,6 +26,15 @@
     inherit (pkgs) piper;
   };
 
+  mich.xdg-autostart.users.${config.mich.meta.defaultUser.name}.packages = builtins.attrValues {
+    inherit (config.programs.firefox) package;
+    inherit
+      (pkgs)
+      equibop
+      qpwgraph # TODO move to michaili-fortresss
+      ;
+  };
+
   services.udev.extraRules = lib.mkIf config.services.desktopManager.gnome.enable ''
     SUBSYSTEM=="drm", ENV{DEVTYPE}=="drm_minor", ENV{DEVNAME}=="/dev/dri/card[0-9]", SUBSYSTEMS=="pci", ATTRS{vendor}=="0x1002", ATTRS{device}=="0x7480", TAG+="mutter-device-preferred-primary"
   '';
