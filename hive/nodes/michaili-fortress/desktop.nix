@@ -31,7 +31,7 @@
     inherit
       (pkgs)
       equibop
-      qpwgraph # TODO move to michaili-fortresss
+      qpwgraph
       ;
   };
 
