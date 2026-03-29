@@ -33,8 +33,14 @@
   # NixOS modules that should always be included
   # includes all the modules defined in this flake
   defaultModules = builtins.attrValues modules;
+
+  # Nodes in this directory. Ignores directories suffixed with `.disabled`
+  nodes = lib.pipe ./. [
+    ilib.subDirectories
+    (builtins.filter (name: !(lib.hasSuffix ".disabled" name)))
+  ];
 in
-  ilib.mapSubDirectories (directory: let
+  lib.genAttrs nodes (directory: let
     meta =
       if (builtins.pathExists ./${directory}/meta.nix)
       then (import ./${directory}/meta.nix (inputs // {inherit lib ilib iliPresets iliPackages';}))
@@ -83,4 +89,3 @@ in
       # A module that sets the hostname to the directory name by default
       ++ [({lib, ...}: {config.networking.hostName = lib.mkDefault directory;})];
   })
-  ./.
