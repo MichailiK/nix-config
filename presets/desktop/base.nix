@@ -15,10 +15,35 @@
     wireplumber.enable = true;
     pulse.enable = true;
   };
-
   fonts = {
-    fontconfig.useEmbeddedBitmaps = true;
-    enableDefaultPackages = true;
+    packages = builtins.attrValues {
+      inherit
+        (pkgs)
+        noto-fonts-cjk-sans # no good CJK font seems to be bundled by default
+        noto-fonts-cjk-serif
+        inter
+        roboto
+        jetbrains-mono
+        ;
+    };
+    fontconfig = {
+      # KDE creates ~/.config/fontconfig/fonts.conf every time a user navigates
+      # to System Settings -> Text & Fonts. It breaks emojis on Firefox.
+      includeUserConf = false;
+
+      defaultFonts = {
+        sansSerif = [
+          "Inter"
+          "Noto Sans"
+        ];
+        serif = ["Noto Serif"];
+        emoji = ["Noto Color Emoji"];
+        monospace = [
+          "JetBrains Mono"
+          "Noto Sans Mono CJK SC" # CJK fallback
+        ];
+      };
+    };
   };
 
   programs.kdeconnect.enable = true;
