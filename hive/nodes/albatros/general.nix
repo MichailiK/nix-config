@@ -1,6 +1,9 @@
 {config, ...}: {
   boot.loader.grub.device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_114787231";
 
+  boot.kernelParams = ["zswap.enabled=1" "zswap.shrinker_enabled=1"];
+  boot.initrd.systemd.enable = true;
+
   security.sudo = {
     wheelNeedsPassword = false;
     execWheelOnly = true;
@@ -30,6 +33,9 @@
     '';
   };
   systemd.network = {
+    # view in `networkctl status <interface>`
+    config.networkConfig.SpeedMeter = true;
+
     enable = true;
     networks = {
       internet = {
@@ -43,15 +49,18 @@
           "1.0.0.1" # Cloudflare IPv4 secondary
         ];
         addresses = [
-          {Address = "2a01:4f8:c014:6465::1/64";} # albatros.michai.li
+          {Address = "2a01:4f8:c014:6465::1/128";} # albatros.michai.li
         ];
-        routes = [{Gateway = "fe80::1";}];
+        routes = [
+          {
+            Gateway = "fe80::1";
+            GatewayOnLink = true;
+          }
+        ];
         networkConfig = {
           DHCP = true;
           IPv4Forwarding = true;
           IPv6Forwarding = true;
-          #IPv4ProxyARP = true;
-          #IPv6ProxyNDP = true;
         };
         cakeConfig = {
           Bandwidth = "1G";
