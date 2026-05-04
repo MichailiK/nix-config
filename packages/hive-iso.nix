@@ -19,7 +19,7 @@
         lib,
         ...
       }: {
-        nixpkgs.hostPlatform = pkgs.system;
+        nixpkgs.hostPlatform = pkgs.stdenv.hostPlatform.system;
         imports = ["${modulesPath}/installer/cd-dvd/installation-cd-minimal-new-kernel-no-zfs.nix"];
         isoImage.squashfsCompression = "zstd -Xcompression-level 6";
         networking.useDHCP = lib.mkForce true;

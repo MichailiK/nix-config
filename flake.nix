@@ -1,9 +1,9 @@
 {
   inputs = {
-    nixpkgs-nixos-unstable.url = "github:NixOS/nixpkgs?ref=nixos-unstable";
-    nixpkgs-stable-latest.url = "github:NixOS/nixpkgs?ref=nixos-25.11";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs?ref=nixpkgs-unstable";
-    nixpkgs-unstable-small.url = "github:NixOS/nixpkgs?ref=nixos-unstable-small";
+    nixpkgs-nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-stable-latest.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs-unstable-small.url = "github:NixOS/nixpkgs/nixos-unstable-small";
     wire.url = "github:forallsys/wire/trunk";
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
