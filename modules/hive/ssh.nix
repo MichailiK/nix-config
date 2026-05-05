@@ -9,7 +9,7 @@
   cfg = config.mich.hive.ssh;
 in {
   # This module depends on the default SSH module
-  imports = [../../default/ssh.nix];
+  imports = [../default/ssh.nix];
 
   options.mich.hive.ssh = let
     originalOpts = options.mich.ssh.hosts.type.getSubOptions [];
