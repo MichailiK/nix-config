@@ -7,7 +7,7 @@
   iliPkgs,
   ...
 }: {
-  mich.meta.defaultUser.packages = [
+  mich.hive.defaultUser.packages = [
     pkgs.keepassxc
     # This might not be a great idea because this could be sequoia chameleon,
     # sequoia cannot make use of GUI pinentry tools (yet?) and this package

@@ -30,7 +30,7 @@
     inherit (pkgs) piper;
   };
 
-  mich.xdg-autostart.users.${config.mich.meta.defaultUser.name}.packages = builtins.attrValues {
+  mich.xdg-autostart.users.${config.mich.hive.defaultUser.name}.packages = builtins.attrValues {
     inherit (config.programs.firefox) package;
     inherit
       (pkgs)

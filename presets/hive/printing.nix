@@ -1,4 +1,4 @@
 {...}: {
   imports = [../printing.nix];
-  mich.meta.defaultUser.extraGroups = ["scanner" "lp"];
+  mich.hive.defaultUser.extraGroups = ["scanner" "lp"];
 }

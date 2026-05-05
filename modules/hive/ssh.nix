@@ -6,12 +6,12 @@
   ...
 }: let
   inherit (lib) mkOption mkEnableOption types;
-  cfg = config.mich.meta.ssh;
+  cfg = config.mich.hive.ssh;
 in {
   # This module depends on the default SSH module
   imports = [../../default/ssh.nix];
 
-  options.mich.meta.ssh = let
+  options.mich.hive.ssh = let
     originalOpts = options.mich.ssh.hosts.type.getSubOptions [];
   in {
     inherit (originalOpts) hostName publicKeys extraConfig;
@@ -20,7 +20,7 @@ in {
       type = types.bool;
       default = config.services.openssh.enable;
       description = ''
-        Whether to enable SSH meta options.
+        Whether to enable SSH hive options.
         By default this mirrors services.openssh.enable.
         Disabling this option will avoid adding this node to the known hosts
         of other nodes in the hive (with the knowNodesPublicKeys option enabled)
@@ -61,22 +61,22 @@ in {
   config.assertions = [
     {
       assertion = cfg.enable || !cfg.knowNodesPublicKeys;
-      message = "config.mich.meta.ssh.knowNodesPublicKeys cannot be enabled without enabling config.mich.meta.ssh.enable";
+      message = "config.mich.hive.ssh.knowNodesPublicKeys cannot be enabled without enabling config.mich.hive.ssh.enable";
     }
     {
       assertion = cfg.enable || !cfg.trustedWithAgentForwarding;
-      message = "config.mich.meta.ssh.trustedWithAgentForwarding cannot be enabled without enabling config.mich.meta.ssh.enable";
+      message = "config.mich.hive.ssh.trustedWithAgentForwarding cannot be enabled without enabling config.mich.hive.ssh.enable";
     }
   ];
 
   config.mich.ssh.hosts = lib.mkIf cfg.enable (
     let
       # Only consider nodes with SSH enabled
-      filteredNodes = lib.filterAttrs (name: node: node.config.mich.meta.ssh.enable == true) nodes;
+      filteredNodes = lib.filterAttrs (name: node: node.config.mich.hive.ssh.enable == true) nodes;
     in
       builtins.mapAttrs (
         name: node: let
-          nodeCfg = node.config.mich.meta.ssh;
+          nodeCfg = node.config.mich.hive.ssh;
         in {
           inherit (nodeCfg) host hostName;
           # If enabled, add the public keys of all the nodes to this system's known hosts file.

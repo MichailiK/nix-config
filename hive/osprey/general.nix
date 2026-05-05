@@ -22,7 +22,7 @@
     enable = true;
     settings.PasswordAuthentication = false;
   };
-  services.getty.autologinUser = config.mich.meta.defaultUser.name;
+  services.getty.autologinUser = config.mich.hive.defaultUser.name;
   networking = {
     useDHCP = false;
     useNetworkd = true;

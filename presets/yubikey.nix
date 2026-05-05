@@ -35,8 +35,8 @@
   # conflicts with other ssh agents
   services.gnome.gcr-ssh-agent.enable = false;
 
-  systemd.user.tmpfiles.users.${config.mich.meta.defaultUser.name}.rules = let
-    file = pkgs.writeText "${config.mich.meta.defaultUser.name}_scdaemon.conf" ''
+  systemd.user.tmpfiles.users.${config.mich.hive.defaultUser.name}.rules = let
+    file = pkgs.writeText "${config.mich.hive.defaultUser.name}_scdaemon.conf" ''
       disable-ccid
       pcsc-shared
     '';

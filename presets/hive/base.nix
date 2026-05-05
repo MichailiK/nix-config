@@ -1,6 +1,6 @@
 {...}: {
   imports = [../base.nix];
-  mich.meta.defaultUser = {
+  mich.hive.defaultUser = {
     name = "michaili";
     description = "Michail K";
     authorizedKeys = [

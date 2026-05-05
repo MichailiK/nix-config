@@ -4,7 +4,7 @@ My Nix config for my various NixOS nodes. Uses [wire] for deployment.
 
 Some of the highlights & interesting things in this flake:
 
-- The `hive` NixOS module has `mich.meta.ssh` options. These allow sharing
+- The `hive` NixOS module has `mich.hive.ssh` options. These allow sharing
   sharing public SSH keys between wire nodes, giving every machine a shared
   SSH known_hosts file.
 - Each node may have a special `meta.nix` file for providing information

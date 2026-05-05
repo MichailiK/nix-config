@@ -14,7 +14,7 @@
       rclone
       ;
   };
-  mich.meta.defaultUser.packages = [
+  mich.hive.defaultUser.packages = [
     (pkgs.writeShellScriptBin "restic-proton" ''
       RESTIC_REPOSITORY="rclone:proton:/restic/archive" \
       RESTIC_PASSWORD_COMMAND="${lib.getExe config.programs.gnupg.package} -d ~/.local/share/ili/restic_secret.gpg" \

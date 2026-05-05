@@ -1,5 +1,5 @@
 {iliPresets, ...}: {
-  mich.meta = {
+  mich.hive = {
     ssh = {
       knowNodesPublicKeys = true;
       trustedWithAgentForwarding = true;

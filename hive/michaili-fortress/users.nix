@@ -1,5 +1,5 @@
 {...}: {
-  mich.meta.defaultUser.extraGroups = [
+  mich.hive.defaultUser.extraGroups = [
     "libvirtd"
     "kvmfr"
   ];

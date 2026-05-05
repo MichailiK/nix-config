@@ -16,7 +16,7 @@
     openFirewall = false; # Firewall rules for SSH are set manually below
     settings.PasswordAuthentication = false;
   };
-  services.getty.autologinUser = config.mich.meta.defaultUser.name;
+  services.getty.autologinUser = config.mich.hive.defaultUser.name;
 
   networking.firewall.logRefusedConnections = false;
   networking.firewall.extraCommands = ''

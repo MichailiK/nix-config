@@ -7,11 +7,11 @@
   imports = [
     ../yubikey.nix
   ];
-  systemd.user.tmpfiles.users.${config.mich.meta.defaultUser.name}.rules =
+  systemd.user.tmpfiles.users.${config.mich.hive.defaultUser.name}.rules =
     lib.mkIf config.programs.git.enable
     (
       let
-        file = pkgs.writeText "${config.mich.meta.defaultUser.name}_gitconfig" ''
+        file = pkgs.writeText "${config.mich.hive.defaultUser.name}_gitconfig" ''
           [commit]
           gpgSign = true
 

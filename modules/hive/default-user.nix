@@ -6,7 +6,7 @@
   inherit (lib) mkOption types;
 in {
   # The default user to create with wheel permissions etc.
-  options.mich.meta.defaultUser = {
+  options.mich.hive.defaultUser = {
     name = mkOption {type = types.str;};
     description = mkOption {
       type = types.nullOr types.str;
@@ -34,9 +34,9 @@ in {
     };
   };
 
-  config.users.users = lib.mkIf (config.mich.meta.defaultUser.name != null) (let
+  config.users.users = lib.mkIf (config.mich.hive.defaultUser.name != null) (let
     inherit
-      (config.mich.meta.defaultUser)
+      (config.mich.hive.defaultUser)
       name
       description
       wheel

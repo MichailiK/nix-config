@@ -1,5 +1,5 @@
 {...}: {
-  mich.meta.defaultUser.extraGroups = ["libvirtd"];
+  mich.hive.defaultUser.extraGroups = ["libvirtd"];
 
   security.sudo.wheelNeedsPassword = false;
   security.sudo.execWheelOnly = true;

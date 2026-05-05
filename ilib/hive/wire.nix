@@ -43,16 +43,16 @@ in {
           config.deployment = {
             allowLocalDeployment = lib.mkDefault true;
             buildOnTarget = lib.mkDefault true;
-            target = lib.mkIf (lib.hasAttrByPath ["mich" "meta"] options) {
+            target = lib.mkIf (lib.hasAttrByPath ["mich" "hive"] options) {
               host = let
-                sshConfig = config.mich.meta.ssh;
+                sshConfig = config.mich.hive.ssh;
               in
                 lib.mkDefault (
                   if (!sshConfig.enable)
                   then null
                   else sshConfig.host
                 );
-              user = lib.mkDefault config.mich.meta.defaultUser.name;
+              user = lib.mkDefault config.mich.hive.defaultUser.name;
             };
           };
         };
