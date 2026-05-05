@@ -35,7 +35,7 @@
       default = pkgs.mkShell {
         packages = builtins.attrValues {
           inherit (pkgs) alejandra;
-          inherit (inputs.wire.packages.${pkgs.system}) wire-small;
+          inherit (inputs.wire.packages.${pkgs.stdenv.hostPlatform.system}) wire-small;
         };
       };
     });
