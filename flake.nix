@@ -15,11 +15,20 @@
     nixpkgs = inputs.nixpkgs-nixos-unstable;
     lib = nixpkgs.lib;
 
-    ilib = import ./ilib.nix {inherit nixpkgs lib;};
+    ilib = import ./ilib {inherit inputs nixpkgs lib;};
     modules = import ./modules {inherit lib ilib;};
     iliPresets = import ./presets {inherit lib ilib;};
     iliPackages' = import ./packages {inherit inputs nixpkgs lib ilib modules iliPresets;};
-    hive = import ./hive {inherit inputs nixpkgs lib ilib modules iliPresets iliPackages';};
+    hive = ilib.hive.mkHive {
+      nodeArgs = {
+        defaultNixpkgs = nixpkgs;
+        metaArgs = {inherit inputs nixpkgs lib ilib modules iliPresets iliPackages';};
+        specialArgs = {inherit inputs nixpkgs lib ilib modules iliPresets iliPackages';};
+        modules = builtins.attrValues modules;
+      };
+      directory = ./hive;
+      predicate = name: !(lib.hasSuffix ".disabled" name);
+    };
   in {
     formatter = ilib.forAllSystems (pkgs: pkgs.alejandra);
     devShells = ilib.forAllSystems (pkgs: {
@@ -35,8 +44,8 @@
     lib = ilib;
 
     # Hive-related attributes
-    _nodes = hive._nodes;
-    wire = hive.wire;
-    nixosConfigurations = hive.nixosConfigurations;
+    hive = hive;
+    wire = ilib.hive.wire.constructHive hive;
+    nixosConfigurations = ilib.hive.nixosConfigurations.constructHive hive;
   };
 }

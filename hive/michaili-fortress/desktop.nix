@@ -22,6 +22,10 @@
     };
   };
   services.ratbagd.enable = true;
+  programs.ausweisapp = {
+    enable = true;
+    openFirewall = true;
+  };
   environment.systemPackages = builtins.attrValues {
     inherit (pkgs) piper;
   };

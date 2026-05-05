@@ -65,6 +65,27 @@
           ]
 
         '')
+        (pkgs.writeTextDir "share/pipewire/pipewire.conf.d/10-virtual-processed-mic.conf" ''
+          context.objects = [
+            {
+              factory = adapter
+              args = {
+                factory.name     = support.null-audio-sink
+                node.name        = "v-processed-mic"
+                node.description = "VNode Processed Mic"
+                node.virtual     = true
+                node.passive     = true
+                media.class      = Audio/Source/Virtual
+                priority.session = 1000
+                object.linger    = true
+                audio.position   = [ FL ] # [ FL FR FC LFE RL RR ]
+                audio.channels   = 1 # https://github.com/dimtpap/obs-pipewire-audio-capture/issues/67#issuecomment-2312591100
+                monitor.channel-volumes = false
+                monitor.passthrough     = true
+              }
+            }
+          ]
+        '')
 
         # Combines all the above virtual sinks into one "VNode Combined" node.
         /*
