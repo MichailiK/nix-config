@@ -32,6 +32,7 @@ in {
     excludeImports ? [], # fileset to exclude from auto imports. metaPath is always excluded.
     specialArgs ? {}, # specialArgs to pass down to the node
     modules ? [], # additional modules to import
+    deployToolOpt ? true, # whether to add the `config.mich.deployTool` option
   }: directory: let
     name = builtins.baseNameOf directory;
     meta =
@@ -68,6 +69,8 @@ in {
       ++ modules
       # A module that sets the hostname to the directory name by default
       ++ [({lib, ...}: {config.networking.hostName = lib.mkDefault name;})];
+
+    inherit deployToolOpt;
   };
 
   # Creates an attrset of nodes using the subdirectories of the specified path.

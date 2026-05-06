@@ -1,4 +1,8 @@
-{...}: {
+{
+  lib,
+  config,
+  ...
+}: {
   imports = [../base.nix];
   mich.hive.defaultUser = {
     name = "michaili";
@@ -6,6 +10,10 @@
     authorizedKeys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOct0GpSUGR8eFXiyPF6rHFQ9r97rdH/+rv/GDZnSyqS openpgp:0x5E718B7B"
     ];
+    hashedPasswordFile = let
+      filePath = config.mich.hive.secrets.paths."hive-user-default-password" or null;
+    in
+      lib.mkIf (filePath != null) filePath;
   };
 
   # non-hive SSH servers I have access to

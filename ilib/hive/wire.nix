@@ -61,7 +61,14 @@ in {
         # Add all nodes into this attrset for wire to recognize
         builtins.mapAttrs (name: node: {
           # Import all the identified modules of the node
-          imports = node.modules;
+          imports =
+            node.modules
+            ++ (lib.optionals node.deployToolOpt [
+              {
+                imports = [./deployToolOpt.nix];
+                config.mich.deployTool = "wire";
+              }
+            ]);
         })
         nodes
       )

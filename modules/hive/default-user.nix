@@ -32,6 +32,15 @@ in {
       default = [];
       description = "Packages to add to the default user";
     };
+    hashedPasswordFile = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+      description = ''
+        Path to file that has the default user's password.
+        Should use format that is suitable for the `chpasswd -e` command
+        (mkpasswd to make one.)
+      '';
+    };
   };
 
   config.users.users = lib.mkIf (config.mich.hive.defaultUser.name != null) (let
@@ -43,10 +52,11 @@ in {
       extraGroups
       authorizedKeys
       packages
+      hashedPasswordFile
       ;
   in {
     ${name} = {
-      inherit name description packages;
+      inherit name description packages hashedPasswordFile;
       isNormalUser = true;
       extraGroups = lib.optionals wheel ["wheel"] ++ extraGroups;
       openssh.authorizedKeys.keys = authorizedKeys;
