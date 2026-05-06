@@ -11,24 +11,20 @@ in {
     present = mkOption {
       type = types.bool;
       description = "Whether secrets are present";
-      default = false;
       readOnly = true;
     };
     toolSupport = mkOption {
       type = types.bool;
       description = "Whether the tool supports secrets";
-      default = false;
       readOnly = true;
     };
     available = mkOption {
       type = types.bool;
       description = "Whether secrets are available (i.e. secrets are present & the tool supports them)";
-      default = cfg.present && cfg.toolSupport;
       readOnly = true;
     };
     paths = mkOption {
       type = types.attrsOf types.str;
-      default = {};
       readOnly = true;
     };
   };
