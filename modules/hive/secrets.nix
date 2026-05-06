@@ -16,6 +16,7 @@ in {
     toolSupport = mkOption {
       type = types.bool;
       description = "Whether the tool supports secrets";
+      default = (config.mich.deployTool or null) == "wire";
       readOnly = true;
     };
     available = mkOption {
@@ -29,10 +30,8 @@ in {
     };
   };
 
-  config = let
-    hasToolSupport = (config.mich.deployTool or null) == "wire";
-  in {
-    mich.hive.secrets.available = cfg.present && hasToolSupport;
+  config = {
+    mich.hive.secrets.available = cfg.present && cfg.toolSupprt;
 
     system.switch.inhibitors = {
       "mich-hive-secrets-available" =
