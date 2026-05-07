@@ -56,7 +56,7 @@
     options = ["fmask=0022" "dmask=0022"];
   };
 
-  fileSystems."/var/lib/garage/data" = {
+  fileSystems."/storage/hdd1" = {
     device = "/dev/disk/by-uuid/ce68b1ad-62dc-443e-bfa7-811cb7f98dd2";
     fsType = "xfs";
     options = [
@@ -65,16 +65,16 @@
     ];
   };
 
+  /*
   fileSystems."/var/lib/garage/meta" = {
     device = "/dev/disk/by-uuid/f74da48e-a96d-4698-b48e-3561b7b3f20b";
     fsType = "btrfs";
-
     options = [
       "subvol=garage-metadata"
-      "compress=zstd"
       "noatime"
     ];
   };
+  */
 
   swapDevices = [
     {device = "/dev/disk/by-uuid/57178162-4038-4369-b7a9-7a58356099de";}

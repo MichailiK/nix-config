@@ -28,6 +28,10 @@ in {
       type = types.attrsOf types.str;
       readOnly = true;
     };
+    owner = mkOption {
+      type = types.attrsOf types.str;
+      default = {};
+    };
   };
 
   config = {
