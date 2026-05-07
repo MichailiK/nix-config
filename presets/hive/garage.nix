@@ -28,6 +28,11 @@ in {
       RUST_BACKTRACE = "1";
     };
   };
+  systemd.services.garage.serviceConfig = {
+    DynamicUser = false;
+    User = "garage";
+    Group = "garage";
+  };
 
   users.users.garage = {
     isSystemUser = true;
