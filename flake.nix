@@ -4,6 +4,7 @@
     nixpkgs-stable-latest.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-unstable-small.url = "github:NixOS/nixpkgs/nixos-unstable-small";
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
     wire.url = "github:forallsys/wire/trunk";
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
