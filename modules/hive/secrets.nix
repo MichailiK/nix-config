@@ -11,13 +11,14 @@ in {
     present = mkOption {
       type = types.bool;
       description = "Whether secrets are present";
-      readOnly = true;
+      #readOnly = true;
+      default = false;
     };
     toolSupport = mkOption {
       type = types.bool;
       description = "Whether the tool supports secrets";
       default = (config.mich.deployTool or null) == "wire";
-      readOnly = true;
+      #readOnly = true;
     };
     available = mkOption {
       type = types.bool;
