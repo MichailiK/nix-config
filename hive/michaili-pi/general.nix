@@ -10,7 +10,7 @@
 
   boot.loader.grub.enable = false;
   boot.loader.generic-extlinux-compatible.enable = true;
-  environment.systemPackages = builtins.attrNames {
+  environment.systemPackages = builtins.attrValues {
     inherit
       (pkgs)
       libraspberrypi
