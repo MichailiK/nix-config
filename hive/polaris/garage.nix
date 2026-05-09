@@ -1,0 +1,29 @@
+{
+  iliPresets,
+  config,
+  ...
+}: {
+  imports = [iliPresets.hive.garage];
+  services.garage.settings = {
+    rpc_public_addr = "${config.networking.fqdn}:3901";
+    data_dir = [
+      {
+        capacity = "1T";
+        path = "/storage/hdd1/garage";
+      }
+    ];
+
+    s3_api = {
+      s3_region = "garage";
+      #api_bind_addr = "/run/garage/s3.sock";
+    };
+    admin = {
+      #api_bind_addr = "/run/garage/admin.sock";
+      #metrics_require_token = true;
+    };
+  };
+
+  systemd.services.garage.serviceConfig = {
+    RuntimeDirectory = "garage";
+  };
+}
