@@ -36,7 +36,7 @@ in {
   };
 
   config = {
-    mich.hive.secrets.available = cfg.present && cfg.toolSupprt;
+    mich.hive.secrets.available = cfg.present && cfg.toolSupport;
 
     system.switch.inhibitors = {
       "mich-hive-secrets-available" =
