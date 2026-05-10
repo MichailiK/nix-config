@@ -24,7 +24,6 @@
       (iliPresets)
       nix
       openssh
-      comma
       ;
   };
 
