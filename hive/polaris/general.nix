@@ -41,11 +41,11 @@
         ];
         addresses = [
           {Address = "38.49.217.220/27";} # polaris.michai.li
-          #{Address = "todo::1/48";} # polaris.michai.li
+          {Address = "2602:ffd5:754:1::2/64";} # polaris.michai.li
         ];
         routes = [
           {Gateway = "38.49.217.193";}
-          #{Gateway = "todo";}
+          {Gateway = "2602:ffd5:754:1::1";}
         ];
         cakeConfig = {
           Bandwidth = "1G";

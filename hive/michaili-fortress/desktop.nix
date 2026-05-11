@@ -36,6 +36,7 @@
       (pkgs)
       equibop
       qpwgraph
+      chromium
       ;
   };
 

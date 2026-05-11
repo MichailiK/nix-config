@@ -6,6 +6,7 @@
 
   boot.kernelParams = ["zswap.enabled=1" "zswap.shrinker_enabled=1"];
   boot.initrd.systemd.enable = true;
+  boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
   i18n = {
     defaultLocale = "en_US.UTF-8";

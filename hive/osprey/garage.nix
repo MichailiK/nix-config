@@ -1,4 +1,8 @@
-{iliPresets, ...}: {
+{
+  iliPresets,
+  config,
+  ...
+}: {
   imports = [iliPresets.hive.garage];
   services.garage.settings = {
     data_dir = [
@@ -9,8 +13,8 @@
     ];
 
     s3_api = {
-      api_bind_addr = "/run/garage/s3.sock";
       s3_region = "garage";
+      api_bind_addr = "/run/garage/s3.sock";
     };
     admin = {
       api_bind_addr = "/run/garage/admin.sock";

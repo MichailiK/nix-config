@@ -18,17 +18,22 @@ in {
       db_engine = "lmdb";
       metadata_auto_snapshot_interval = "6h";
 
+      block_size = "10M";
+
       rpc_secret_file = lib.mkIf (rpcSecretPath != null) rpcSecretPath;
       rpc_bind_addr = "[::]:3901";
-      bootstrap_peers = [
-        #"todo@osprey.michai.li:3901"
-      ];
+      rpc_public_addr = "${config.networking.fqdn}:3901";
+
+      s3_api = {
+        s3_region = "garage";
+      };
     };
     extraEnvironment = {
       RUST_BACKTRACE = "1";
     };
   };
-  systemd.services.garage.serviceConfig = {
+  networking.firewall.allowedTCPPorts = [3901];
+  systemd.services.garage.serviceConfig = lib.mkIf (rpcSecretPath != null) {
     DynamicUser = false;
     User = "garage";
     Group = "garage";

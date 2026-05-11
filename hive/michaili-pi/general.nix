@@ -18,7 +18,9 @@
       ;
   };
 
-  boot.kernelParams = ["zswap.enabled=1" "zswap.shrinker_enabled=1"];
+  # use mainline kernel instead of rpi one
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelParams = ["zswap.enabled=1" "zswap.shrinker_enabled=1" "usbcore.autosuspend=-1"];
   boot.initrd.systemd.enable = true;
 
   security.sudo = {

@@ -42,7 +42,7 @@ in {
           # wire deployment specific configuration
           config.deployment = {
             allowLocalDeployment = lib.mkDefault true;
-            buildOnTarget = lib.mkDefault true;
+            #buildOnTarget = lib.mkDefault true;
             target = lib.mkIf (lib.hasAttrByPath ["mich" "hive"] options) {
               host = let
                 sshConfig = config.mich.hive.ssh;
