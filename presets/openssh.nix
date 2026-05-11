@@ -5,7 +5,10 @@
 }: {
   services.openssh = {
     enable = true;
-    settings.PasswordAuthentication = false;
+    settings = {
+      PasswordAuthentication = false;
+      UsePAM = false;
+    };
   };
 
   # Allows using private SSH keys for authentication via PAM
