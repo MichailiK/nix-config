@@ -1,6 +1,10 @@
-{pkgs, ...}: {
+{
+  lib,
+  pkgs,
+  ...
+}: {
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
 
     # https://chrisdown.name/2026/03/24/zswap-vs-zram-when-to-use-what.html
     kernelParams = ["zswap.enabled=1" "zswap.shrinker_enabled=1"];
