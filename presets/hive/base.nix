@@ -4,16 +4,19 @@
   ...
 }: {
   imports = [../base.nix];
-  mich.hive.defaultUser = {
+  mich.hive.defaultUser = let
+    hashedPasswordPath = config.mich.hive.secrets.paths."hive-user-default-password" or null;
+  in {
     name = "michaili";
     description = "Michail K";
     authorizedKeys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOct0GpSUGR8eFXiyPF6rHFQ9r97rdH/+rv/GDZnSyqS openpgp:0x5E718B7B"
     ];
-    hashedPasswordFile = let
-      filePath = config.mich.hive.secrets.paths."hive-user-default-password" or null;
-    in
-      lib.mkIf (filePath != null) filePath;
+    hashedPasswordFile = lib.mkIf (hashedPasswordPath != null) hashedPasswordPath;
+    # for systems with OpenSSH PAM disabled, this will let the default user login with
+    # only tested with the perl user/group script, might not work with
+    # systemd-sysusers or userborn
+    hashedPassword = lib.mkIf (hashedPasswordPath == null) "*";
   };
 
   # non-hive SSH servers I have access to

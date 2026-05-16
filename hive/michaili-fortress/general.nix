@@ -6,6 +6,7 @@
 
   boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
+  time.timeZone = "Europe/Berlin";
   i18n = {
     defaultLocale = "en_US.UTF-8";
     extraLocales = [

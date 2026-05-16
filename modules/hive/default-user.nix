@@ -32,12 +32,19 @@ in {
       default = [];
       description = "Packages to add to the default user";
     };
+    hashedPassword = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+      description = ''
+        Path to file that has the default user's password.
+        (mkpasswd to make one.)
+      '';
+    };
     hashedPasswordFile = mkOption {
       type = types.nullOr types.str;
       default = null;
       description = ''
         Path to file that has the default user's password.
-        Should use format that is suitable for the `chpasswd -e` command
         (mkpasswd to make one.)
       '';
     };
@@ -52,11 +59,12 @@ in {
       extraGroups
       authorizedKeys
       packages
+      hashedPassword
       hashedPasswordFile
       ;
   in {
     ${name} = {
-      inherit name description packages hashedPasswordFile;
+      inherit name description packages hashedPassword hashedPasswordFile;
       isNormalUser = true;
       extraGroups = lib.optionals wheel ["wheel"] ++ extraGroups;
       openssh.authorizedKeys.keys = authorizedKeys;

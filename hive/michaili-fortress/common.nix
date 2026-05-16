@@ -11,7 +11,6 @@
   };
 
   networking.hostName = "michaili-fortress";
-  time.timeZone = "Europe/Berlin";
 
   imports = builtins.attrValues {
     inherit
