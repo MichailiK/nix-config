@@ -3,7 +3,7 @@
     enable = true;
     package = pkgs.caddy.withPlugins {
       plugins = ["github.com/mholt/caddy-l4@v0.1.0"];
-      hash = "sha256-BCCz41xaWVsfN293VDC2Jo+naEZxurnhXkTHGxZS1g0=";
+      hash = "sha256-/JdWIX81AFXKYb0XE9YzxEqkSO/uXRHJNU8e2Fe4Gw8=";
     };
     virtualHosts = {
       "s3.michai.li" = {
