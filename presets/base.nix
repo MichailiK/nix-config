@@ -1,8 +1,13 @@
 {pkgs, ...}: {
-  # https://chrisdown.name/2026/03/24/zswap-vs-zram-when-to-use-what.html
-  boot.kernelParams = ["zswap.enabled=1" "zswap.shrinker_enabled=1"];
-  # systemd initrd is nicer & faster than the legacy script-based one
-  boot.initrd.systemd.enable = true;
+  boot = {
+    boot.kernelPackages = pkgs.linuxPackages_latest;
+
+    # https://chrisdown.name/2026/03/24/zswap-vs-zram-when-to-use-what.html
+    kernelParams = ["zswap.enabled=1" "zswap.shrinker_enabled=1"];
+
+    # systemd initrd is nicer & faster than the legacy script-based one
+    initrd.systemd.enable = true;
+  };
 
   networking = {
     # systemd-networkd is preferred for configuring network interfaces
