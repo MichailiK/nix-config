@@ -1,4 +1,59 @@
 {pkgs, ...}: {
+  # https://chrisdown.name/2026/03/24/zswap-vs-zram-when-to-use-what.html
+  boot.kernelParams = ["zswap.enabled=1" "zswap.shrinker_enabled=1"];
+  # systemd initrd is nicer & faster than the legacy script-based one
+  boot.initrd.systemd.enable = true;
+
+  networking = {
+    # systemd-networkd is preferred for configuring network interfaces
+    useNetworkd = true;
+    # logs are generally not needed & too noisy, especially on internet-exposed nodes
+    firewall.logRefusedConnections = false;
+    # used by traceroute to discover hops
+    firewall.extraCommands = ''
+      iptables -A INPUT -p udp --dport 33434:33534 -j REJECT --reject-with icmp-port-unreachable
+      ip6tables -A INPUT -p udp --dport 33434:33534 -j REJECT --reject-with icmp6-port-unreachable
+    '';
+  };
+  systemd.network.enable = true;
+
+  # only users in the wheel group are expected to ever use sudo
+  security.sudo.execWheelOnly = true;
+
+  environment.systemPackages = builtins.attrValues {
+    inherit
+      (pkgs)
+      # system monitor
+      htop
+      btop
+      # hardware tools
+      sdparm
+      hdparm
+      smartmontools
+      pciutils
+      usbutils
+      nvme-cli
+      # network tools
+      fuse
+      fuse3
+      sshfs
+      tcpdump
+      # utils
+      dig
+      file
+      jq
+      ;
+  };
+
+  # ensure the userspace tools for some commonly used filesystems are present
+  boot.supportedFilesystems = [
+    "ext4"
+    "btrfs"
+    "ntfs"
+    "vfat"
+    "xfs"
+  ];
+
   programs = {
     neovim = {
       enable = true;

@@ -48,5 +48,6 @@
     hive = hive;
     wire = ilib.hive.wire.constructHive hive;
     nixosConfigurations = ilib.hive.nixosConfigurations.constructHive hive;
+    peer-grouping-test = import ./peer-grouping-test.nix {inherit lib;};
   };
 }

@@ -1,13 +1,7 @@
 {config, ...}: {
   boot.loader.systemd-boot.enable = true;
 
-  boot.kernelParams = ["zswap.enabled=1" "zswap.shrinker_enabled=1"];
-  boot.initrd.systemd.enable = true;
-
-  security.sudo = {
-    wheelNeedsPassword = false;
-    execWheelOnly = true;
-  };
+  security.sudo.wheelNeedsPassword = false;
 
   virtualisation = {
     containers.enable = true;
@@ -18,25 +12,14 @@
     };
   };
 
-  services.openssh = {
-    enable = true;
-    settings.PasswordAuthentication = false;
-  };
   services.getty.autologinUser = config.mich.hive.defaultUser.name;
-  networking = {
-    useDHCP = false;
-    useNetworkd = true;
-    firewall.logRefusedConnections = false;
-    firewall.extraCommands = ''
-      iptables -A INPUT -p udp --dport 33434:33534 -j REJECT --reject-with icmp-port-unreachable
-      ip6tables -A INPUT -p udp --dport 33434:33534 -j REJECT --reject-with icmp6-port-unreachable
-    '';
-  };
+
+  networking.useDHCP = false;
+
   systemd.network = {
     # view in `networkctl status <interface>`
     config.networkConfig.SpeedMeter = true;
 
-    enable = true;
     networks = {
       internet = {
         matchConfig = {
@@ -69,12 +52,6 @@
             Metric = 200;
           }
         ];
-        networkConfig = {
-          #DHCP = true;
-          #IPv4Forwarding = true;
-          #IPv6Forwarding = true;
-          #IPv6AcceptRA = false;
-        };
         cakeConfig = {
           Bandwidth = "1G";
           FlowIsolationMode = "dual-src-host"; # fairness is applied over source IPs first, then flows within them.
