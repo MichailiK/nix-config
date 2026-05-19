@@ -8,6 +8,8 @@
     virtualHosts = {
       "s3.michai.li" = {
         extraConfig = ''
+          header Strict-Transport-Security max-age=63072000; includeSubDomains; preload
+
           reverse_proxy unix//run/garage/s3.sock {
             transport http {
               dial_timeout 2s
@@ -24,6 +26,8 @@
       };
       "michai.li" = {
         extraConfig = ''
+          header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+
           root * /srv/http/michai.li
           encode
           file_server
@@ -31,6 +35,8 @@
       };
       "www.michai.li" = {
         extraConfig = ''
+          header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+
           redir https://michai.li{uri}
         '';
       };
