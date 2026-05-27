@@ -30,6 +30,7 @@
       # KDE creates ~/.config/fontconfig/fonts.conf every time a user navigates
       # to System Settings -> Text & Fonts. It breaks emojis on Firefox.
       includeUserConf = false;
+      useEmbeddedBitmaps = false;
 
       defaultFonts = {
         sansSerif = [

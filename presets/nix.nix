@@ -7,35 +7,12 @@
   config,
   ...
 }: let
-  inherit (lib) mapAttrs' mapAttrsToList filterAttrs;
-
   # hacky way to figure out which nixpkgs flake is being used in this system
   currentNixpkgsFlake =
     lib.findFirst
     (flake: flake.outPath == builtins.toString pkgs.path)
     null
     (builtins.attrValues inputs);
-
-  inputFarm = pkgs.linkFarm "input-farm" (
-    mapAttrsToList
-    (name: path: {
-      inherit
-        name
-        path
-        ;
-    })
-    (
-      filterAttrs (name: _value: name != "self") (
-        inputs
-        // {
-          nixpkgs =
-            if (currentNixpkgsFlake != null)
-            then currentNixpkgsFlake
-            else {outPath = pkgs.path;};
-        }
-      )
-    )
-  );
 in {
   environment.sessionVariables.NIXPKGS_ALLOW_UNFREE = "1";
   nixpkgs.config.allowUnfree = true;
@@ -65,11 +42,23 @@ in {
 
   nix = {
     package = pkgs.lix;
+    channel.enable = false;
+    settings = {
+      trusted-users = [
+        "@wheel"
+      ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+        "pipe-operator"
+      ];
+      nix-path = config.nix.nixPath;
+      flake-registry = "";
+    };
+
+    # Flake registry & Nix paths
     registry =
-      (mapAttrs' (name: val: {
-          inherit name;
-          value.flake = val;
-        })
+      (builtins.mapAttrs (name: val: {flake = val;})
         inputs)
       // {
         nixpkgs = lib.mkForce (
@@ -86,23 +75,30 @@ in {
         );
       };
 
-    nixPath = [inputFarm.outPath];
-    channel.enable = false;
-    settings = {
-      trusted-users = [
-        "@wheel"
-      ];
-      experimental-features = [
-        "nix-command"
-        "flakes"
-        "pipe-operator"
-      ];
-      nix-path = config.nix.nixPath;
-      flake-registry = "";
-    };
+    nixPath = let
+      inputFarm = pkgs.linkFarm "input-farm" (
+        lib.mapAttrsToList
+        (name: path: {
+          inherit
+            name
+            path
+            ;
+        })
+        (
+          lib.filterAttrs (name: _value: name != "self") (
+            inputs
+            // {
+              nixpkgs =
+                if (currentNixpkgsFlake != null)
+                then currentNixpkgsFlake
+                else {outPath = pkgs.path;};
+            }
+          )
+        )
+      );
+    in [inputFarm.outPath];
   };
 
-  # thank u lychee for thanking raf https://github.com/itslychee/config/blob/0719e197b511a389264127dedeb87a2985bea486/modules/nix/settings.nix#L59-L63
   systemd.tmpfiles.rules = lib.mkIf (!config.nix.channel.enable) [
     "R /root/.nix-defexpr/channels - - - -"
     "R /nix/var/nix/profiles/per-user/root/channels - - - -"

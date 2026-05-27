@@ -5,7 +5,7 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-unstable-small.url = "github:NixOS/nixpkgs/nixos-unstable-small";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-    wire.url = "github:forallsys/wire/trunk";
+    wire.url = "github:forallsys/wire/v1.3.0";
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs-nixos-unstable";
@@ -48,6 +48,5 @@
     hive = hive;
     wire = ilib.hive.wire.constructHive hive;
     nixosConfigurations = ilib.hive.nixosConfigurations.constructHive hive;
-    peer-grouping-test = import ./peer-grouping-test.nix {inherit lib;};
   };
 }
