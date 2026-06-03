@@ -26,6 +26,47 @@
   };
   systemd.network.enable = true;
 
+  services.resolved = {
+    enable = true;
+    settings.Resolve = {
+      # DNS servers should be first ordered by IPv6/IPv4, then primary/secondary,
+      # then by preference.
+      DNS = lib.join " " [
+        # IPv6 primaries
+        "2606:4700:4700::1111#cloudflare-dns.com"
+        "2001:4860:4860::8888#dns.google"
+        "2620:fe::fe#dns.quad9.net"
+        # IPv6 secondaries
+        "2606:4700:4700::1001#cloudflare-dns.com"
+        "2001:4860:4860::8844#dns.google"
+        "2620:fe::9#dns.quad9.net"
+        # IPv4 primaries
+        "1.1.1.1#cloudflare-dns.com"
+        "8.8.8.8#dns.google"
+        "9.9.9.9#dns.quad9.net"
+        # IPv4 secondaries
+        "1.0.0.1#cloudflare-dns.com"
+        "8.8.4.4#dns.google"
+        "149.112.112.112#dns.quad9.net"
+      ];
+      FallbackDNS = ""; # Don't use any of the DNS servers built-in to systemd-resolved
+      Domains = "~.";
+      DNSOverTLS = true;
+      DNSSEC = true;
+
+      MulticastDNS = "resolve"; # Avahi is preferred for mDNS purposes esp. due to CUPS
+    };
+  };
+
+  # Search domains & local DNS servers are not able to
+  networking.networkmanager.connectionConfig = {
+    "connection.dns-over-tls" = 1; # opportunistic
+    # Off because fritz.box DNS servers claim to support DNSSEC but fail to provide
+    # the appropriate DNSSEC records for their own search domain
+    "connection.dnssec" = 0;
+  };
+  # TODO the above should be done for systemd-networkd managed interfaces too
+
   # only users in the wheel group are expected to ever use sudo
   security.sudo.execWheelOnly = true;
 
