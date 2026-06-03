@@ -16,7 +16,7 @@
   # - CUPS: https://github.com/OpenPrinting/libcups/issues/81
   # - sane-airscan has a hard dependency on avahi-client:
   #   https://github.com/alexpevzner/sane-airscan/blob/1d174de6858abb1950f2f296e5349e3bd32c56a7/meson.build#L47
-  services.resolved.settings.Resolve.MulticastDNS = false;
+  services.resolved.settings.Resolve.MulticastDNS = lib.mkDefault "resolve";
   services.avahi = {
     enable = true;
     nssmdns4 = true;
