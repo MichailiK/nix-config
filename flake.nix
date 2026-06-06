@@ -35,7 +35,11 @@
     devShells = ilib.forAllSystems (pkgs: {
       default = pkgs.mkShell {
         packages = builtins.attrValues {
-          inherit (pkgs) alejandra;
+          inherit
+            (pkgs)
+            alejandra
+            nixd
+            ;
           inherit (inputs.wire.packages.${pkgs.stdenv.hostPlatform.system}) wire;
         };
       };
