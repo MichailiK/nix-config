@@ -40,9 +40,6 @@
   environment.systemPackages = builtins.attrValues {
     inherit
       (pkgs)
-      wget
-      wl-clipboard
-      nil
       streamcontroller
       ;
   };
