@@ -66,6 +66,7 @@
         equibop
         handbrake
         vscodium
+        wl-clipboard
         ;
     };
   };
