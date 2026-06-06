@@ -66,7 +66,6 @@
         equibop
         handbrake
         vscodium
-        zed-editor
         ;
     };
   };
