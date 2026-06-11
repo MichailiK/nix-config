@@ -3,9 +3,10 @@
     enable = true;
     package = pkgs.caddy.withPlugins {
       plugins = ["github.com/mholt/caddy-l4@v0.1.0"];
-      hash = "sha256-/JdWIX81AFXKYb0XE9YzxEqkSO/uXRHJNU8e2Fe4Gw8=";
+      hash = "sha256-V0L5QdeZfbRkLriGMdqFK/p3iHyGRiAAYYqcSMZ5E04=";
     };
     virtualHosts = {
+      /*
       "s3.michai.li" = {
         extraConfig = ''
           header Strict-Transport-Security max-age=63072000; includeSubDomains; preload
@@ -24,6 +25,7 @@
           }
         '';
       };
+      */
       "michai.li" = {
         extraConfig = ''
           header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
