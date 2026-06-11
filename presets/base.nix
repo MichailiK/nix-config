@@ -58,7 +58,7 @@
     };
   };
 
-  # Search domains & local DNS servers are not able to
+  # Search domains & local DNS servers may not support DoT and DNSSEC
   networking.networkmanager.connectionConfig = {
     "connection.dns-over-tls" = 1; # opportunistic
     # Off because fritz.box DNS servers claim to support DNSSEC but fail to provide
