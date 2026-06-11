@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: {
   services.caddy = {
     enable = true;
     package = pkgs.caddy.withPlugins {
@@ -29,6 +33,20 @@
       "michai.li" = {
         extraConfig = ''
           header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+          header X-Robots-Tag "noindex"
+          header Content-Security-Policy "${lib.join "; " [
+            "default-src 'none'"
+            "base-uri 'none'"
+            "form-action 'none'"
+            "frame-ancestors 'none'"
+            "style-src 'sha256-2LxHFThVaRB5fFzwSw3EIkCJ10XBZz8Kl60kKm64HDQ='"
+            "media-src 'self'"
+            "sandbox"
+            "upgrade-insecure-requests"
+          ]}"
+          header X-Content-Type-Options "nosniff"
+          header X-Frame-Options "DENY"
+          header No-Vary-Search "params"
 
           root * /srv/http/michai.li
           encode
