@@ -1,13 +1,14 @@
 {
+  inputs,
   pkgs,
   lib,
   ...
 }: {
   services.caddy = {
     enable = true;
-    package = pkgs.caddy.withPlugins {
+    package = inputs.nix-caddy-withplugins.packages.${pkgs.stdenv.hostPlatform.system}.caddy.withPlugins {
       plugins = ["github.com/mholt/caddy-l4@v0.1.0"];
-      hash = "sha256-V0L5QdeZfbRkLriGMdqFK/p3iHyGRiAAYYqcSMZ5E04=";
+      hash = "sha256-Mllomw//FVf36MWJui1mVlIk9aPl4jltfk32w4uOAV0=";
     };
     virtualHosts = {
       /*
