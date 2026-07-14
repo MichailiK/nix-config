@@ -27,7 +27,11 @@
     openFirewall = true;
   };
   environment.systemPackages = builtins.attrValues {
-    inherit (pkgs) piper;
+    inherit
+      (pkgs)
+      piper
+      feishin
+      ;
   };
 
   mich.xdg-autostart.users.${config.mich.hive.defaultUser.name}.packages = builtins.attrValues {
@@ -37,6 +41,7 @@
       equibop
       qpwgraph
       chromium
+      feishin
       ;
   };
 
