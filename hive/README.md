@@ -39,6 +39,8 @@ an attribute set that may contain:
 - `specialArgs`: any specialArgs to add to the node
 - `excludeImports`: a [fileset](https://nixos.org/manual/nixpkgs/unstable/#sec-functions-library-fileset)
   or list of paths which get excluded from automatic import.
+- `deployToolModules`: attrset containing NixOS modules that get imported
+  based on the deployment tool being used.
 
 All attributes are optional.
 
@@ -50,8 +52,16 @@ Example:
   imports = [ inputs.foobar.nixosModules.default ];
   specialArgs = {
     something = "abc";
-    utils = import ./utilities.nix; 
+    utils = import ./utilities.nix;
   };
   excludeImports = [ ./domains ./utilities.nix ];
+  deployToolModules = {
+    wire = { ... }: {
+      deployment = {
+        allowLocalDeployment = false;
+        buildOnTarget = false;
+      };
+    };
+  };
 }
 ```

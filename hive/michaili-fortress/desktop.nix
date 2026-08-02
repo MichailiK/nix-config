@@ -2,6 +2,7 @@
   pkgs,
   lib,
   config,
+  iliPkgs,
   ...
 }: {
   programs = {
@@ -27,11 +28,8 @@
     openFirewall = true;
   };
   environment.systemPackages = builtins.attrValues {
-    inherit
-      (pkgs)
-      piper
-      feishin
-      ;
+    inherit (pkgs) piper;
+    inherit (iliPkgs) feishin;
   };
 
   mich.xdg-autostart.users.${config.mich.hive.defaultUser.name}.packages = builtins.attrValues {
@@ -41,8 +39,8 @@
       equibop
       qpwgraph
       chromium
-      feishin
       ;
+    inherit (iliPkgs) feishin;
   };
 
   services.udev.extraRules = lib.mkIf config.services.desktopManager.gnome.enable ''

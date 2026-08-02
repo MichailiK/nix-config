@@ -3,10 +3,6 @@
   lib,
   ...
 }: {
-  deployment = {
-    allowLocalDeployment = false;
-    buildOnTarget = false;
-  };
   mich.hive = {
     ssh = {
       knowNodesPublicKeys = true;

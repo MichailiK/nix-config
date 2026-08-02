@@ -40,15 +40,11 @@ in {
       then (import /${directory}/${metaPath} metaArgs)
       else {};
     nodeNixpkgs = meta.nixpkgs or defaultNixpkgs;
-  in {
-    # The nixpkgs this node should be evaluated with.
-    nixpkgs = nodeNixpkgs;
 
-    # The specialArgs that should be used for this node.
-    specialArgs = specialArgs // (meta.specialArgs or {});
+    deployToolModules = meta.deployToolModules or {};
 
-    # Modules the node consists of. Excludes special files like `metaPath`
-    modules =
+    # Modules the node consists of. Excludes special files like `metaPath`.
+    nodeModules =
       (let
         excludeFileSet = lib.pipe excludeImports [
           (v: [v] ++ (meta.excludeImports or []))
@@ -69,8 +65,25 @@ in {
       ++ modules
       # A module that sets the hostname to the directory name by default
       ++ [({lib, ...}: {config.networking.hostName = lib.mkDefault name;})];
+  in {
+    nixpkgs = nodeNixpkgs;
 
-    inherit deployToolOpt;
+    specialArgs = specialArgs // (meta.specialArgs or {});
+
+    modules = nodeModules;
+
+    inherit deployToolModules deployToolOpt;
+
+    # Resolves the complete module list for the given deployment tool
+    modulesForTool = tool:
+      nodeModules
+      ++ lib.optionals (builtins.hasAttr tool deployToolModules) [deployToolModules.${tool}]
+      ++ lib.optionals deployToolOpt [
+        {
+          imports = [./deployToolOpt.nix];
+          config.mich.deployTool = tool;
+        }
+      ];
   };
 
   # Creates an attrset of nodes using the subdirectories of the specified path.
