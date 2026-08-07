@@ -1,4 +1,4 @@
-{
+{...}: {
   deployToolModules.wire = {
     deployment = {
       allowLocalDeployment = false;
