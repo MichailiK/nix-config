@@ -64,8 +64,8 @@
         (pkgs)
         vlc
         equibop
-        # https://github.com/NixOS/nixpkgs/issues/540400
-        #handbrake
+        libreoffice
+        handbrake
         vscodium
         wl-clipboard
         ;
