@@ -28,6 +28,13 @@ in {
     else [];
 
   nixpkgs.overlays = [
+    # TODO wait for https://github.com/NixOS/nixpkgs/pull/573942 to reach nixos-unstable
+    (final: prev: {
+      inherit
+        (inputs.nixpkgs-unstable-small.legacyPackages.${prev.stdenv.hostPlatform.system})
+        lixPackageSets
+        ;
+    })
     (final: prev: {
       inherit
         (prev.lixPackageSets.stable)
