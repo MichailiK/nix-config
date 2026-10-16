@@ -48,10 +48,13 @@
   };
 
   programs.kdeconnect.enable = true;
+
   programs.firefox = {
     enable = true;
     package = pkgs.librewolf;
   };
+
+  programs.thunderbird.enable = true;
 
   programs.direnv.enable = true;
 
