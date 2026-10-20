@@ -44,5 +44,7 @@
       ;
   };
 
+  networking.firewall.backend = "nftables";
+
   services.flatpak.enable = true;
 }
