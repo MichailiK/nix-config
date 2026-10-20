@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: {
   boot.supportedFilesystems = ["ntfs"];
 
   boot.loader.systemd-boot.enable = true;
@@ -43,6 +47,9 @@
       streamcontroller
       ;
   };
+
+  networking.nftables.enable = true;
+  networking.firewall.extraCommands = lib.mkForce "";
 
   services.flatpak.enable = true;
 }
