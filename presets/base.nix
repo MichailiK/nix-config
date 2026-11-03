@@ -26,6 +26,12 @@
   };
   systemd.network.enable = true;
 
+  systemd.oomd = {
+    enableRootSlice = true;
+    enableUserSlices = true;
+  };
+  systemd.slices."-".sliceConfig.ManagedOOMSwap = "kill";
+
   services.resolved = {
     enable = true;
     settings.Resolve = {
